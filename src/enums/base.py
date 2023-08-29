@@ -1,3 +1,10 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+# @Author: zxq
+# @Desc: { 公共模型 }
+# @Date: 2023/08/29 14:28
+
+
 from enum import Enum
 
 
@@ -22,13 +29,6 @@ class StrEnum(str, BaseEnum):
 class IntEnum(int, BaseEnum):
     # 整型枚举
     pass
-
-
-class ProjectStatusEnum(IntEnum):
-    One = 1 # 进行中
-    Tow = 2 # 已完成
-    Three = 3 # 已超期
-    Four = 4 # 已停止
 
 
 class ImageFormatEnum(StrEnum):
