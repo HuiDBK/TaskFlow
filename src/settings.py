@@ -3,10 +3,11 @@
 # @Author: zxq
 # @Desc: { 配置文件 }
 # @Date: 2023/08/29 13:54
-
+import uvicorn
+from src.server import app
 
 def main():
-    pass
+    uvicorn.run(app, host="127.0.0.1", port=8000)
 
 
 
