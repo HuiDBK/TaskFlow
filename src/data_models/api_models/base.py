@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field, StrBytes, validator
 from typing import Optional, Union
 
 from src.constants import constants
-from src.constants.enums import ImageTypeEnum
+from src.enums.base import ImageTypeEnum
 
 
 class ListPageBaseModel(BaseModel):
