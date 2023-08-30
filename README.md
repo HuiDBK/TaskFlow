@@ -14,6 +14,10 @@
          |-- enums:        枚举模块
          |-- dao:          数据访问层，例如mysql
          |-- controllers:  控制层，调用services 
+             |-- project:  项目路由处理
+             |-- tag:      标签路由处理 
+             |-- task:     任务路由处理
+             |-- user:     用户路由处理
          |-- routers:      路由层，调用handlers
          |-- logics:       逻辑层，业务逻辑
              |-- user:      用户模块 
