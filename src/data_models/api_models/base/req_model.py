@@ -5,11 +5,10 @@
 # @Date: 2023/08/30 11:29
 from datetime import date
 
-from pydantic import BaseModel, Field, StrBytes, validator
-from typing import Optional, Union
+from pydantic import BaseModel, Field, validator
+from typing import Optional
 
 from src.constants import constants
-from src.enums.base import ImageTypeEnum
 
 
 class ListPageBaseModel(BaseModel):

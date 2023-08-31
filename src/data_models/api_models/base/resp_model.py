@@ -18,3 +18,4 @@ class SuccessResp(BaseRespModel):
     message: str = Field(default="OK", description="响应消息")
     data: dict = Field(default={}, description="响应数据")
 
+

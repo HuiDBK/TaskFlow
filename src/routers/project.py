@@ -3,9 +3,11 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/08/30 12:11
+from fastapi import APIRouter
+
+router = APIRouter()
 
 
-def main():
-    pass
+
 
 

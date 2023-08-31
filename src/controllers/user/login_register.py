@@ -8,7 +8,7 @@ from src.data_models.api_models.base import SuccessResp
 
 
 class UserRegisterControllers:
-    """用户注册路由处理"""
+    """用户登录注册路由处理"""
 
     @classmethod
     async def login(cls, req_model: user.UserLoginIn):
@@ -23,4 +23,4 @@ class UserRegisterControllers:
     @classmethod
     async def register(cls, req_model: user.UserRegisterIn):
         print(req_model)
-        return SuccessResp()
+        return SuccessResp(data=req_model.dict())
