@@ -13,6 +13,4 @@ class UserDetailControllers:
 
     @classmethod
     async def detail(cls):
-
         return SuccessResp(data={"username": username})
-

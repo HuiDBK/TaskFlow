@@ -13,7 +13,7 @@ from src.constants import constants
 
 class ListPageBaseModel(BaseModel):
     """分页入参模型"""
-    current_page: Optional[int] = Field(default=1,gt=0,description="页码")
+    current_page: Optional[int] = Field(default=1, gt=0, description="页码")
     page_size: Optional[int] = Field(
         default=constants.DEFAULT_PAGE_SIZE, gt=0, le=constants.MAX_PAGE_SIZE, description="每页数量，默认10，最大1000")
 
