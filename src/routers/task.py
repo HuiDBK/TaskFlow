@@ -6,7 +6,7 @@
 from fastapi import APIRouter
 
 from src.controllers.task import TaskControllers
-from src.data_models.api_models import task_api
+from src.data_models.api_models import task_api,base_api
 from src.data_models.api_models.base import SuccessResp
 
 router = APIRouter()
@@ -14,7 +14,7 @@ router = APIRouter()
 router.add_api_route(
     path="/create",
     endpoint=TaskControllers.create_task,
-    response_model=task_api.TaskCreateOut,
+    response_model=base_api.PKRespModel,
     methods=["POST"],
     summary="任务创建",
 )
@@ -24,11 +24,11 @@ router.add_api_route(
 )
 
 router.add_api_route(
-    path="/query",
+    path="/query_list",
     endpoint=TaskControllers.query_list_task,
     response_model=task_api.TaskQueryOut,
     methods=["GET"],
-    summary="任务查询",
+    summary="任务分页查询",
 )
 
 router.add_api_route(

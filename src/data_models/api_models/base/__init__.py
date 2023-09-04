@@ -6,3 +6,4 @@
 from .resp_model import SuccessResp
 from .resp_model import BaseRespModel
 from .req_model import ListPageBaseModel
+from .resp_model import PKRespModel

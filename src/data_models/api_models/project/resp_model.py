@@ -38,9 +38,9 @@ class ProjectDetailItem(BaseModel):
     project_icon: str = Field(..., description="项目展示图地址-oss key")
 
 
-class ProjectCreateItem(BaseModel):
-    """ 创建项目返参 """
-    id: int = Field(description="项目主键id")
+# class ProjectCreateItem(BaseModel):
+#     """ 创建项目返参 """
+#     id: int = Field(description="项目主键id")
 
 
 class ProjectDetailOut(BaseRespModel):
@@ -49,10 +49,10 @@ class ProjectDetailOut(BaseRespModel):
     data: ProjectDetailItem
 
 
-class ProjectCreateOut(BaseRespModel):
-    """ 项目创建出参"""
-
-    data: ProjectCreateItem
+# class ProjectCreateOut(BaseRespModel):
+#     """ 项目创建出参"""
+#
+#     data: ProjectCreateItem
 
 
 class ProjectQueryOut(BaseRespModel):

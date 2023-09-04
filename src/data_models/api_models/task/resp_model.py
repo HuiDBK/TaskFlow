@@ -23,15 +23,15 @@ class TaskQueryItem(BaseModel):
 
 # 任务就不需要再查看详情信息了，直接显示出来就行了
 
-class TaskCreateItem(BaseModel):
-    """ 创建任务返参 """
-    id: int = Field(description="任务主键id")
+# class TaskCreateItem(BaseModel):
+#     """ 创建任务返参 """
+#     id: int = Field(description="任务主键id")
 
 
-class TaskCreateOut(BaseRespModel):
-    """ 任务创建出参 """
-
-    data: TaskCreateItem
+# class TaskCreateOut(BaseRespModel):
+#     """ 任务创建出参 """
+#
+#     data: TaskCreateItem
 
 
 class TaskQueryOut(BaseRespModel):
