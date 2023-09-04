@@ -3,6 +3,6 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/08/30 11:26
-from .req_model import UserLoginIn, UserRegisterIn
-
+from .req_model import *
+from .resp_model import *
 

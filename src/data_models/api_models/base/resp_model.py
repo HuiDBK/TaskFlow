@@ -7,7 +7,6 @@ from pydantic import BaseModel, Field
 
 
 class BaseRespModel(BaseModel):
-
     code: int = Field(..., description="响应吗")
     message: str = Field(..., description="响应消息")
     data: dict = Field(..., description="响应数据")
@@ -18,3 +17,10 @@ class SuccessResp(BaseRespModel):
     message: str = Field(default="OK", description="响应消息")
     data: dict = Field(default={}, description="响应数据")
 
+
+class PKModel(BaseModel):
+    id : int = Field(description="主键id")
+
+
+class PKRespModel(SuccessResp):
+    data = PKModel

@@ -3,11 +3,5 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/08/30 12:06
-
-
-def main():
-    pass
-
-
-if __name__ == '__main__':
-    main()
+from .req_model import ProjectCreateIn, ProjectDeleteIn, ProjectDetailIn, ProjectQueryIn, ProjectUpdateIn
+from .resp_model import  ProjectDetailItem, ProjectDetailOut, ProjectQueryOut
