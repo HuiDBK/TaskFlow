@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 
-from src.routers import api_router
 from src import dao
+from src.routers import api_router
+
 app = FastAPI(description="任务管理系统")
 
 # 加载路由

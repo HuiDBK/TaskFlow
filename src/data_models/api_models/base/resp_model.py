@@ -18,6 +18,7 @@ class SuccessResp(BaseRespModel):
     data: dict = Field(default={}, description="响应数据")
 
 
+# project create 返参
 class PKModel(BaseModel):
     id : int = Field(description="主键id")
 

@@ -13,7 +13,7 @@ class UserRegisterIn(BaseModel):
     username: str = Field(..., description="用户昵称")
     email: EmailStr = Field(..., description="邮箱")
     password: str = Field(..., description="用户密码")
-    phone: int = Field(..., description="手机号")
+    phone: str = Field(..., description="手机号")
 
 
 class UserLoginIn(BaseModel):

@@ -3,7 +3,7 @@
 # @Author: zxq
 # @Desc: { 项目枚举 }
 # @Date: 2023/08/29 14:32
-from src.enums.base import IntEnum
+from py_tools.enums.base import IntEnum
 
 
 class ProjectStatusEnum(IntEnum):

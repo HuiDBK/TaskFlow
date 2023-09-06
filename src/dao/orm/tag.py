@@ -6,7 +6,8 @@
 from py_tools.connections.db.mysql import BaseOrmTable
 from sqlalchemy.orm import Mapped, mapped_column
 
-class TagModel(BaseOrmTable):
+
+class TagTable(BaseOrmTable):
     __tablename__ = "tag"
     tag: Mapped[str] = mapped_column(comment="标签内容")
-    parent_id: Mapped[int] = mapped_column(default=0,comment="父级id")
+    parent_id: Mapped[int] = mapped_column(default=0, comment="父级id")
