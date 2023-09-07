@@ -17,6 +17,6 @@ class UserDetailItem(BaseModel):
 
 
 class UserDetailOut(BaseRespModel):
-    """ 用户详情出参 """
+    """用户详情出参"""
 
     data: UserDetailItem = Field(description="用户详情信息")

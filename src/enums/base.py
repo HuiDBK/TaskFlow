@@ -7,7 +7,7 @@ from py_tools.enums.base import BaseEnum
 
 
 class ErrorCodeEnum(BaseEnum):
-    """ 错误码枚举类 """
+    """错误码枚举类"""
 
     OK = (0, "SUCCESS")
     FAILED = (-1, "FAILED")
@@ -17,5 +17,3 @@ class ErrorCodeEnum(BaseEnum):
     SOCKET_ERR = (5000, "网络异常")
     SYSTEM_ERR = (5001, "系统异常")
     PARAM_ERR = (5002, "参数错误")
-
-

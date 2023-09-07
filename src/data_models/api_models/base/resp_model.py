@@ -20,7 +20,7 @@ class SuccessResp(BaseRespModel):
 
 # project create 返参
 class PKModel(BaseModel):
-    id : int = Field(description="主键id")
+    id: int = Field(description="主键id")
 
 
 class PKRespModel(SuccessResp):

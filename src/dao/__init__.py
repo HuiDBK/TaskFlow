@@ -22,6 +22,3 @@ async def init_orm():
     db_client.init_mysql_engine()
     DBManager.init_db_client(db_client)
     return db_client
-
-
-

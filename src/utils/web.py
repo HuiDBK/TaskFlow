@@ -7,13 +7,9 @@ from src.enums import ErrorCodeEnum
 
 
 def success_api_resp(data=None):
-    """ 成功的响应 """
+    """成功的响应"""
     data = data or {}
-    resp_content = {
-        "code": ErrorCodeEnum.OK.value,
-        "message": ErrorCodeEnum.OK.desc,
-        "data": data or {}
-    }
+    resp_content = {"code": ErrorCodeEnum.OK.value, "message": ErrorCodeEnum.OK.desc, "data": data or {}}
     return resp_content
 
 
