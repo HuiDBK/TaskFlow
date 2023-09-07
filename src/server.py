@@ -1,22 +1,26 @@
 from fastapi import FastAPI
+from py_tools.logging import logger
 
-from src import dao
+from src import dao, settings
+from src.controllers.common.error_handler import register_exception_handler
+from src.middlewares import register_middlewares
 from src.routers import api_router
+from src.utils import log_util
 
-app = FastAPI(description="任务管理系统")
-
-# 加载路由
+app = FastAPI(
+    description="任务管理系统",
+    middleware=register_middlewares(),  # 注册web中间件
+    exception_handlers=register_exception_handler(),  # 注册web错误处理
+)
 
 
 async def init_setup():
     """初始化项目配置"""
 
-    log_util.setup_logging()
+    log_util.setup_logging(settings.logging_conf)
 
     await dao.init_orm()
     await dao.init_redis()
-
-    log_util.setup_tortoise_orm_logging_debug()
 
 
 @app.on_event("startup")
@@ -34,6 +38,3 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     logger.error("app shutdown")
-
-    # 关闭orm
-    await Tortoise.close_connections()

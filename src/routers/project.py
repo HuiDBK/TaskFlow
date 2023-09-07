@@ -6,8 +6,8 @@
 from fastapi import APIRouter
 
 from src.controllers.project import ProjectControllers, ProjectDetailControllers
-from src.data_models.api_models import project_api,base_api
-from src.data_models.api_models.base import SuccessResp
+from src.data_models.api_models import base_api, project_api
+from src.data_models.api_models.base import SuccessRespModel
 
 router = APIRouter()
 
@@ -20,7 +20,11 @@ router.add_api_route(
 )
 
 router.add_api_route(
-    path="/update", endpoint=ProjectControllers.update_project, response_model=SuccessResp, methods=["PUT"], summary="项目更新"
+    path="/update",
+    endpoint=ProjectControllers.update_project,
+    response_model=SuccessRespModel,
+    methods=["PUT"],
+    summary="项目更新",
 )
 
 router.add_api_route(
@@ -32,7 +36,11 @@ router.add_api_route(
 )
 
 router.add_api_route(
-    path="/delete", endpoint=ProjectControllers.delete_project, response_model=SuccessResp, methods=["DELETE"], summary="项目删除"
+    path="/delete",
+    endpoint=ProjectControllers.delete_project,
+    response_model=SuccessRespModel,
+    methods=["DELETE"],
+    summary="项目删除",
 )
 
 router.add_api_route(

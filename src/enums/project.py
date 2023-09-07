@@ -3,10 +3,10 @@
 # @Author: zxq
 # @Desc: { 项目枚举 }
 # @Date: 2023/08/29 14:32
-from py_tools.enums.base import IntEnum
+from py_tools.enums.base import BaseEnum
 
 
-class ProjectStatusEnum(IntEnum):
+class ProjectStatusEnum(BaseEnum):
     One = 1  # 进行中
     Tow = 2  # 已完成
     Three = 3  # 已超期

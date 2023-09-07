@@ -4,14 +4,16 @@
 # @Desc: { 主入口模块 }
 # @Date: 2023/08/29 12:13
 import uvicorn
-from src import settings
+from py_tools.logging import logger
 
+from src import settings
 from src.server import app
 
 
 def main():
-    uvicorn.run(app, host=settings.server_host, port=settings.server_port)
+    logger.info(f"project run {settings.server_host}:{settings.server_port}")
+    uvicorn.run(app, host=settings.server_host, port=settings.server_port, log_level=settings.server_log_level)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

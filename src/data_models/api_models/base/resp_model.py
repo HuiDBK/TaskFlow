@@ -12,16 +12,15 @@ class BaseRespModel(BaseModel):
     data: dict = Field(..., description="响应数据")
 
 
-class SuccessResp(BaseRespModel):
+class SuccessRespModel(BaseRespModel):
     code: int = Field(default=1, description="响应吗")
     message: str = Field(default="OK", description="响应消息")
     data: dict = Field(default={}, description="响应数据")
 
 
-# project create 返参
 class PKModel(BaseModel):
     id: int = Field(description="主键id")
 
 
-class PKRespModel(SuccessResp):
-    data = PKModel
+class PKRespModel(SuccessRespModel):
+    data: PKModel = Field(description="主键响应模型")
