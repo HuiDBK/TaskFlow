@@ -5,15 +5,16 @@
 # @Date: 2023/08/30 11:26
 
 
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class UserRegisterIn(BaseModel):
     """用户注册入参"""
+
     username: str = Field(..., description="用户昵称")
     email: EmailStr = Field(..., description="邮箱")
     password: str = Field(..., description="用户密码")
-    phone: int = Field(..., description="手机号")
+    phone: str = Field(..., description="手机号")
 
 
 class UserLoginIn(BaseModel):

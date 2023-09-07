@@ -10,7 +10,7 @@ mysql_port = "3306"
 mysql_user = "root"
 mysql_password = "56qwertyuiop"
 mysql_charset = "utf8mb4"
+mysql_dbname = "task_manage_system"
 
-
-server_host="127.0.0.1"
-server_port=8000
+server_host = "127.0.0.1"
+server_port = 8000

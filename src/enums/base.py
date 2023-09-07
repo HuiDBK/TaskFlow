@@ -3,44 +3,17 @@
 # @Author: zxq
 # @Desc: { 公共模型 }
 # @Date: 2023/08/29 14:28
+from py_tools.enums.base import BaseEnum
 
 
-from enum import Enum
+class ErrorCodeEnum(BaseEnum):
+    """错误码枚举类"""
 
+    OK = (0, "SUCCESS")
+    FAILED = (-1, "FAILED")
 
-class BaseEnum(Enum):
-    # 枚举基类
+    AUTHORIZATION_ERR = (4001, "权限认证错误")
 
-    @classmethod
-    def get_member_values(cls):
-        return [item.value for item in cls._member_map_.values()]
-
-    @classmethod
-    def get_member_names(cls):
-        return [name for name in cls._member_names_]
-
-
-class StrEnum(str, BaseEnum):
-    # 字符串枚举
-
-    pass
-
-
-class IntEnum(int, BaseEnum):
-    # 整型枚举
-    pass
-
-
-class ImageFormatEnum(StrEnum):
-    """支持的图片文件格式枚举"""
-
-    JPG = ".jpg"
-    JPEG = ".jpeg"
-    PNG = ".png"
-
-
-class ImageTypeEnum(StrEnum):
-    """图片类型枚举"""
-
-    File = "file"
-    Base64Str = "str"
+    SOCKET_ERR = (5000, "网络异常")
+    SYSTEM_ERR = (5001, "系统异常")
+    PARAM_ERR = (5002, "参数错误")
