@@ -6,7 +6,7 @@
 from datetime import timedelta
 from typing import Union
 
-from src.enums import RedisTypeEnum
+from py_tools.enums import RedisTypeEnum
 
 
 class RedisCacheInfo(object):

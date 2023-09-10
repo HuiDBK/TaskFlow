@@ -3,11 +3,11 @@
 # @Author: Yuchen
 # @Desc: { 心跳接口 }
 # @Date: 2023/07/13 20:42
-from src.utils import web
+from src.data_models.api_models.base import SuccessRespModel
 
 
 class HeartBeatController:
     @staticmethod
     async def heart():
         """心跳接口"""
-        return web.success_api_resp()
+        return SuccessRespModel()
