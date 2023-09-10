@@ -6,8 +6,8 @@
 from fastapi import APIRouter
 
 from src.controllers.task import TaskControllers
-from src.data_models.api_models import task_api,base_api
-from src.data_models.api_models.base import SuccessResp
+from src.data_models.api_models import base_api, task_api
+from src.data_models.api_models.base import SuccessRespModel
 
 router = APIRouter()
 
@@ -20,7 +20,7 @@ router.add_api_route(
 )
 
 router.add_api_route(
-    path="/update", endpoint=TaskControllers.update_task, response_model=SuccessResp, methods=["PUT"], summary="任务更新"
+    path="/update", endpoint=TaskControllers.update_task, response_model=SuccessRespModel, methods=["PUT"], summary="任务更新"
 )
 
 router.add_api_route(
@@ -32,5 +32,5 @@ router.add_api_route(
 )
 
 router.add_api_route(
-    path="/delete", endpoint=TaskControllers.delete_task, response_model=SuccessResp, methods=["DELETE"], summary="任务删除"
+    path="/delete", endpoint=TaskControllers.delete_task, response_model=SuccessRespModel, methods=["DELETE"], summary="任务删除"
 )

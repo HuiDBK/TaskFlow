@@ -6,7 +6,7 @@
 from fastapi import Query
 
 from src.data_models.api_models import user
-from src.data_models.api_models.base import SuccessResp
+from src.data_models.api_models.base import SuccessRespModel
 
 
 class UserDetailControllers:
@@ -14,4 +14,4 @@ class UserDetailControllers:
 
     @classmethod
     async def detail(cls):
-        return SuccessResp(data={"username": username})
+        return SuccessRespModel()

@@ -4,26 +4,26 @@
 # @Desc: { 模块描述 }
 # @Date: 2023/08/29 12:15
 from fastapi import APIRouter
-from src.controllers.user import UserRegisterControllers,UserDetailControllers
-from src.data_models.api_models import base_api
-from src.data_models.api_models import user_api
+
+from src.controllers.user import UserDetailControllers, UserRegisterControllers
+from src.data_models.api_models import base_api, user_api
 
 router = APIRouter()
 
 router.add_api_route(
     path="/login",
     endpoint=UserRegisterControllers.login,
-    response_model=base_api.SuccessResp,
+    response_model=base_api.SuccessRespModel,
     methods=["POST"],
-    summary="用户登录"
+    summary="用户登录",
 )
 
 router.add_api_route(
     path="/register",
     endpoint=UserRegisterControllers.register,
-    response_model=base_api.SuccessResp,
+    response_model=base_api.SuccessRespModel,
     methods=["POST"],
-    summary="用户注册"
+    summary="用户注册",
 )
 
 router.add_api_route(
@@ -31,5 +31,5 @@ router.add_api_route(
     endpoint=UserDetailControllers.detail,
     response_model=user_api.UserDetailOut,
     methods=["GET"],
-    summary="用户详情"
+    summary="用户详情",
 )
