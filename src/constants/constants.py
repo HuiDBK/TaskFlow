@@ -1,0 +1,6 @@
+# 默认分页
+DEFAULT_PAGE_SIZE = 10
+MAX_PAGE_SIZE = 1000
+
+# 时间格式
+DEFAULT_TIME_FMT =  "%Y-%m-%d %H:%M:%S"
