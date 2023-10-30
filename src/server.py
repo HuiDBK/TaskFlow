@@ -5,7 +5,7 @@ from src import dao, settings
 from src.controllers.common.error_handler import register_exception_handler
 from src.middlewares import register_middlewares
 from src.routers import api_router
-from src.utils import log_util
+from src.utils import TraceUtil, log_util
 
 app = FastAPI(
     description="任务管理系统",
@@ -26,6 +26,7 @@ async def init_setup():
 @app.on_event("startup")
 async def startup_event():
     """项目启动时准备环境"""
+    TraceUtil.set_trace_id(title="app-server")
 
     await init_setup()
 
