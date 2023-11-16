@@ -19,8 +19,8 @@ async def init_setup():
 
     log_util.setup_logging(settings.logging_conf)
 
-    await dao.init_orm()
-    await dao.init_redis()
+    # await dao.init_orm()
+    # await dao.init_redis()
 
 
 @app.on_event("startup")
@@ -31,7 +31,7 @@ async def startup_event():
     await init_setup()
 
     # 加载路由
-    app.include_router(api_router, prefix="/api")
+    app.include_router(api_router)
 
     logger.info("fastapi startup success")
 

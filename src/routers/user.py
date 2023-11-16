@@ -3,10 +3,9 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/08/29 12:15
-from fastapi import APIRouter
-
 from src.controllers.user import UserDetailControllers, UserRegisterControllers
 from src.data_models.api_models import base_api, user_api
+from src.routers.base import APIRouter
 
 router = APIRouter()
 

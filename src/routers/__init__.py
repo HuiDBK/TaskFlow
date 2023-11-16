@@ -3,9 +3,8 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/08/30 10:59
-from fastapi import APIRouter
-
 from src.routers import common, project, task, user
+from src.routers.base import APIRouter
 
 api_router = APIRouter(prefix="/api/v1")
 

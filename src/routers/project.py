@@ -3,11 +3,10 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/08/30 12:11
-from fastapi import APIRouter
-
 from src.controllers.project import ProjectControllers, ProjectDetailControllers
 from src.data_models.api_models import base_api, project_api
 from src.data_models.api_models.base import SuccessRespModel
+from src.routers.base import APIRouter
 
 router = APIRouter()
 
