@@ -3,6 +3,7 @@
 # @Author: Hui
 # @Desc: { 日志配置模块 }
 # @Date: 2023/09/07 16:46
+import logging
 import os
 
 # 项目基准路径
@@ -27,6 +28,8 @@ server_logging_retention = "7 days"
 error_logging_retention = "30 days"
 
 # 项目日志配置
+console_log_level = logging.DEBUG
+
 logging_conf = {
     "server_handler": {
         "file": server_log_file,

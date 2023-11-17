@@ -34,7 +34,7 @@ class LoggingAPIRoute(APIRoute):
             process_time = time.perf_counter() - start_time
             response.headers["X-Response-Time"] = str(process_time)
             log_info += f"<-- {response.status_code} {request.url.path} (took: {process_time:.2f}s)"
-            logger.info(log_info)
+            logger.debug(log_info)  # 处理大量并发请求时，记录请求日志信息会影响服务性能
             return response
 
         return log_route_handler
