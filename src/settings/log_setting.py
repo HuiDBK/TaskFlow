@@ -5,6 +5,7 @@
 # @Date: 2023/09/07 16:46
 import logging
 import os
+import sys
 
 # 项目基准路径
 base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -29,26 +30,32 @@ error_logging_retention = "30 days"
 
 # 项目日志配置
 console_log_level = logging.DEBUG
+log_format = "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level} | {trace_msg} | {name}:{function}:{line} - {message}"
 
 logging_conf = {
+    "console_handler": {
+        "sink": sys.stdout,
+        "level": console_log_level,
+        # "format": log_format, # 开启控制台也会输出 trace_msg 信息但日志没有颜色了
+    },
     "server_handler": {
-        "file": server_log_file,
+        "sink": server_log_file,
         "level": "INFO",
         "rotation": server_logging_rotation,
         "retention": server_logging_retention,
         "enqueue": True,
         "backtrace": False,
         "diagnose": False,
-        "format": "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level} | {trace_msg} | {name}:{function}:{line} - {message}",
+        "format": log_format,
     },
     "error_handler": {
-        "file": error_log_file,
+        "sink": error_log_file,
         "level": "ERROR",
         "rotation": error_logging_rotation,
         "retention": error_logging_retention,
         "enqueue": True,
         "backtrace": True,
         "diagnose": True,
-        "format": "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level} | {trace_msg} | {name}:{function}:{line} - {message}",
+        "format": log_format,
     },
 }

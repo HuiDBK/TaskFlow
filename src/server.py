@@ -17,7 +17,7 @@ app = FastAPI(
 async def init_setup():
     """初始化项目配置"""
 
-    log_util.setup_logging(settings.logging_conf, settings.console_log_level)
+    log_util.setup_logging(settings.logging_conf)
 
     # await dao.init_orm()
     # await dao.init_redis()

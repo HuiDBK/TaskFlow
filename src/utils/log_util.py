@@ -21,17 +21,15 @@ def _logger_filter(record):
     return record
 
 
-def setup_logging(logging_conf: dict, console_log_level=logging.DEBUG):
+def setup_logging(logging_conf: dict):
     """
     配置项目日志信息
     Args:
         logging_conf: 项目日志配置
-        console_log_level: 控制台日志级别，默认DEBUG
     """
     logger.remove()
-    logger.add(sys.stdout, level=console_log_level)
     for log_handler, log_conf in logging_conf.items():
-        log_file = log_conf.pop("file", None)
+        log_file = log_conf.pop("sink", None)
         log_conf["filter"] = _logger_filter
         logger.add(log_file, **log_conf)
     logger.info("setup logging success")
