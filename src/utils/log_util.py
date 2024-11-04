@@ -3,11 +3,10 @@
 # @Author: Hui
 # @Desc: { 模块描述 }
 # @Date: 2023/09/07 17:01
-import logging
-import sys
 
-from py_tools.logging import logger
+from py_tools.logging import setup_logging
 
+from src.settings import log_setting
 from src.utils import context_util
 
 
@@ -21,15 +20,13 @@ def _logger_filter(record):
     return record
 
 
-def setup_logging(logging_conf: dict):
-    """
-    配置项目日志信息
-    Args:
-        logging_conf: 项目日志配置
-    """
-    logger.remove()
-    for log_handler, log_conf in logging_conf.items():
-        log_file = log_conf.pop("sink", None)
-        log_conf["filter"] = _logger_filter
-        logger.add(log_file, **log_conf)
-    logger.info("setup logging success")
+def setup_logger():
+    """配置项目日志信息"""
+    setup_logging(
+        log_dir=log_setting.logging_dir,
+        # log_filter=_logger_filter,
+        # log_format=log_setting.log_format,
+        console_log_level=log_setting.console_log_level,
+        log_retention=log_setting.server_logging_retention,
+        log_rotation=log_setting.server_logging_rotation,
+    )

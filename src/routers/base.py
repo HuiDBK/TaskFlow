@@ -5,11 +5,12 @@
 # @Date: 2023/11/16 14:10
 import fastapi
 
+from src import settings
 from src.middlewares.api_route import LoggingAPIRoute
 
 
-class APIRouter(fastapi.APIRouter):
-    def __init__(self, *args, api_log=True, **kwargs):
+class BaseAPIRouter(fastapi.APIRouter):
+    def __init__(self, *args, api_log=settings.server_access_log, **kwargs):
         super().__init__(*args, **kwargs)
         if api_log:
             # 开启api请求日志信息

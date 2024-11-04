@@ -18,23 +18,24 @@ class LoggingAPIRoute(APIRoute):
 
         async def log_route_handler(request: Request) -> Response:
             """日志记录请求信息与处理耗时"""
-            start_time = time.perf_counter()
-            log_info = f"\n--> {request.method} {request.url.path} {request.client.host}:{request.client.port}\n"
+            req_log_info = f"--> {request.method} {request.url.path} {request.client.host}:{request.client.port}"
             if request.query_params:
-                log_info += f"--> Query Params: {request.query_params}\n"
+                req_log_info += f"\n--> Query Params: {request.query_params}"
 
             if "application/json" in request.headers.get("Content-Type", ""):
                 try:
                     json_body = await request.json()
-                    log_info += f"--> json_body: {json_body}\n"
+                    req_log_info += f"\n--> json_body: {json_body}"
                 except Exception:
                     logger.exception("Failed to parse JSON body")
 
+            logger.info(req_log_info)
+            start_time = time.perf_counter()
             response: Response = await original_route_handler(request)
             process_time = time.perf_counter() - start_time
             response.headers["X-Response-Time"] = str(process_time)
-            log_info += f"<-- {response.status_code} {request.url.path} (took: {process_time:.2f}s)"
-            logger.debug(log_info)  # 处理大量并发请求时，记录请求日志信息会影响服务性能
+            resp_log_info = f"<-- {response.status_code} {request.url.path} (took: {process_time:.5f}s)"
+            logger.info(resp_log_info)  # 处理大量并发请求时，记录请求日志信息会影响服务性能，可以用nginx代替
             return response
 
         return log_route_handler

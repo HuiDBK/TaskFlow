@@ -6,9 +6,9 @@
 from src.controllers.common import FileUploadController, HeartBeatController
 from src.data_models.api_models import common_api
 from src.data_models.api_models.base import SuccessRespModel
-from src.routers.base import APIRouter
+from src.routers.base import BaseAPIRouter
 
-router = APIRouter()
+router = BaseAPIRouter()
 
 router.add_api_route(
     "/files/upload",
