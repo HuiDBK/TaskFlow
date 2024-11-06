@@ -42,3 +42,11 @@ class TraceUtil(object):
 
         context_util.TRACE_ID.set(trace_id)
         return trace_id
+
+    @staticmethod
+    def get_req_id() -> str:
+        return context_util.REQUEST_ID.get()
+
+    @staticmethod
+    def get_trace_id() -> str:
+        return context_util.TRACE_ID.get()

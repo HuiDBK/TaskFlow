@@ -62,7 +62,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 class TraceReqMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         # 设置请求id
-        request_id = TraceUtil.set_req_id()
+        request_id = TraceUtil.set_req_id(request.headers.get("X-Request-ID"))
         response = await call_next(request)
         response.headers["X-Request-ID"] = f"{request_id}"  # 记录同一个请求的唯一id
         return response
