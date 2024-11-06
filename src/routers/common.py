@@ -3,13 +3,12 @@
 # @Author: Hui
 # @Desc: { 模块描述 }
 # @Date: 2023/09/07 17:48
-from fastapi import APIRouter
-
 from src.controllers.common import FileUploadController, HeartBeatController
 from src.data_models.api_models import common_api
 from src.data_models.api_models.base import SuccessRespModel
+from src.routers.base import BaseAPIRouter
 
-router = APIRouter()
+router = BaseAPIRouter()
 
 router.add_api_route(
     "/files/upload",

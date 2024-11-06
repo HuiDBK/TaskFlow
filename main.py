@@ -12,7 +12,9 @@ from src.server import app
 
 def main():
     logger.info(f"project run {settings.server_host}:{settings.server_port}")
-    uvicorn.run(app, host=settings.server_host, port=settings.server_port, log_level=settings.server_log_level)
+    uvicorn.run(
+        app=app, host=settings.server_host, port=settings.server_port, log_level=settings.server_log_level, access_log=False
+    )
 
 
 if __name__ == "__main__":

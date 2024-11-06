@@ -3,7 +3,7 @@
 # @Author: Hui
 # @Desc: { redis 客户端模块 }
 # @Date: 2023/07/10 21:23
-from py_tools.connections.db.redis_client import RedisManager as BaseRedisManager
+from py_tools.connections.db.redis_client import BaseRedisManager
 
 from src.dao.redis.cache_info import RedisCacheInfo
 

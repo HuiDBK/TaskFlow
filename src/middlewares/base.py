@@ -9,7 +9,9 @@ from fastapi import Request
 from fastapi.middleware import Middleware
 from fastapi.responses import Response
 from py_tools.logging import logger
-from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
+
+from src.utils import TraceUtil
 
 
 class LoggingMiddleware(BaseHTTPMiddleware):
@@ -28,6 +30,8 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next) -> Response:
         start_time = time.perf_counter()
+        # 设置请求id
+        request_id = TraceUtil.set_req_id()
 
         # 打印请求信息
         logger.info(f"--> {request.method} {request.url.path} {request.client.host}")
@@ -49,13 +53,24 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         # 计算响应时间
         process_time = time.perf_counter() - start_time
         response.headers["X-Response-Time"] = f"{process_time:.2f}s"
+        response.headers["X-Request-ID"] = f"{request_id}"  # 记录同一个请求的唯一id
         logger.info(f"<-- {response.status_code} {request.url.path} (took: {process_time:.2f}s)\n")
 
+        return response
+
+
+class TraceReqMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
+        # 设置请求id
+        request_id = TraceUtil.set_req_id(request.headers.get("X-Request-ID"))
+        response = await call_next(request)
+        response.headers["X-Request-ID"] = f"{request_id}"  # 记录同一个请求的唯一id
         return response
 
 
 def register_middlewares():
     """注册中间件"""
     return [
-        Middleware(LoggingMiddleware),
+        # Middleware(LoggingMiddleware),
+        Middleware(TraceReqMiddleware),
     ]

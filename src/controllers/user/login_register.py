@@ -13,7 +13,6 @@ class UserRegisterControllers:
     @classmethod
     async def login(cls, req_model: user.UserLoginIn):
         # 参数校验
-        print(req_model)
 
         # 业务逻辑处理
 

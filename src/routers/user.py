@@ -3,15 +3,14 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/08/29 12:15
-from fastapi import APIRouter
-
 from src.controllers.user import UserDetailControllers, UserRegisterControllers
 from src.data_models.api_models import base_api, user_api
+from src.routers.base import BaseAPIRouter
 
-router = APIRouter()
+router = BaseAPIRouter()
 
 router.add_api_route(
-    path="/login",
+    path="/v1/users/login",
     endpoint=UserRegisterControllers.login,
     response_model=base_api.SuccessRespModel,
     methods=["POST"],
@@ -19,7 +18,7 @@ router.add_api_route(
 )
 
 router.add_api_route(
-    path="/register",
+    path="/v1/users/register",
     endpoint=UserRegisterControllers.register,
     response_model=base_api.SuccessRespModel,
     methods=["POST"],
@@ -27,7 +26,7 @@ router.add_api_route(
 )
 
 router.add_api_route(
-    path="/detail",
+    path="/v1/users/detail",
     endpoint=UserDetailControllers.detail,
     response_model=user_api.UserDetailOut,
     methods=["GET"],
