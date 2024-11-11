@@ -8,9 +8,12 @@ from typing import Union
 
 from fastapi import Request
 
+from src.dao.orm.tables import UserTable
+
 # 请求对象上下文
 REQUEST_CTX: contextvars.ContextVar[Union[Request, None]] = contextvars.ContextVar("request", default=None)
 
+USER_CTX: contextvars.ContextVar[Union[UserTable, None]] = contextvars.ContextVar("user", default=None)
 
 # 请求唯一id
 REQUEST_ID: contextvars.ContextVar[str] = contextvars.ContextVar("request_id", default="")

@@ -1,0 +1,37 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+# @Author: Hui
+# @File: user_manager.py
+# @Desc: { 模块描述 }
+# @Date: 2024/11/11 15:19
+from py_tools.connections.db.mysql import DBManager
+from py_tools.utils import RegexUtil
+
+from src.dao.orm.tables.user import UserTable
+
+
+class UserManager(DBManager):
+    orm_table = UserTable
+
+    async def user_login(self, account: str, password: str) -> UserTable:
+        """
+        用户登录
+        Args:
+            account: 用户账号（支持 用户名/手机号/邮箱）
+            password: 用户密码
+
+        Returns:
+            user
+        """
+        if RegexUtil.find_chinese_phone_numbers(account):
+            # 手机号登陆
+            conds = [UserTable.phone == account, UserTable.password == password]
+        elif RegexUtil.find_emails(account):
+            # 邮箱登陆
+            conds = [UserTable.email == account, UserTable.password == password]
+        else:
+            # 用户名登陆
+            conds = [UserTable.username == account, UserTable.password == password]
+
+        user = await self.query_one(conds=conds)
+        return user

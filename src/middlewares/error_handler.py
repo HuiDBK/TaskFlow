@@ -19,15 +19,18 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     """全局捕捉参数验证异常"""
 
     # 格式化参数校验错误信息
-    message = ".".join([f'{".".join(map(lambda x: str(x), error.get("loc")))}:{error.get("msg")};' for error in exc.errors()])
-    error_tip = f"参数校验错误 {message}"
+    errors = exc.errors()
+    formatted_errors = [
+        {"field": ".".join(str(loc) for loc in error["loc"]), "message": error["msg"]} for error in errors
+    ]
+    error_tip = f"参数校验错误 {formatted_errors}"
     logger.error(error_tip)
 
-    error_detail = {"error_detail": exc.errors()}
+    error_detail = {"error_detail": formatted_errors}
 
     return JSONResponse(
         status_code=HTTPStatus.OK,  # 200
-        content=web.fail_api_resp_with_err_enum(BizErrCodeEnum.PARAM_ERR, error_tip, error_detail),
+        content=web.fail_api_resp_with_err_enum(BizErrCodeEnum.PARAM_ERR, "Validation error", error_detail),
     )
 
 

@@ -26,3 +26,15 @@ class PKModel(BaseModel):
 
 class PKRespModel(SuccessRespModel):
     data: PKModel = Field(description="主键响应模型")
+
+
+class TokenModel(BaseModel):
+    token: str = Field(description="token")
+
+
+class TokenRespModel(SuccessRespModel):
+    data: TokenModel = Field(None, description="token响应模型")
+
+    def __init__(self, token: str, **kwargs):
+        super().__init__(**kwargs)
+        self.data = TokenModel(token=token)

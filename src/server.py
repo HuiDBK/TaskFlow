@@ -3,8 +3,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from py_tools.logging import logger
 
-from src.controllers.common.error_handler import register_exception_handler
 from src.middlewares import register_middlewares
+from src.middlewares.error_handler import register_exception_handler
 from src.routers import api_router
 from src.utils import TraceUtil, log_util
 

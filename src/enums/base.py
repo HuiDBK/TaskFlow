@@ -3,10 +3,10 @@
 # @Author: zxq
 # @Desc: { 公共模型 }
 # @Date: 2023/08/29 14:28
-from py_tools.enums import StrEnum
+from py_tools.enums.error import BaseErrCode, BaseErrCodeEnum
 
 
-class BizErrCodeEnum(StrEnum):
+class BizErrCodeEnum(BaseErrCodeEnum):
     """
     错误码前缀
      - 000-通用基础错误码前缀
@@ -20,26 +20,5 @@ class BizErrCodeEnum(StrEnum):
      - 500-通用系统错误码前缀
     """
 
-    OK = ("000-0000", "SUCCESS")
-    FAILED = ("000-0001", "FAILED")
-    FUNC_TIMEOUT_ERR = ("000-0002", "函数最大超时错误")
-    FUNC_RETRY_ERR = ("000-0003", "函数最大重试错误")
-    SEND_SMS_ERR = ("000-0004", "发送短信错误")
-    SEND_EMAIL_ERR = ("000-0005", "发送邮件错误")
-
-    AUTH_ERR = ("400-0401", "权限认证错误")
-    LOGIN_ERR = ("400-0403", "未登陆错误")
-    NOT_FOUND_ERR = ("400-0404", "未找到资源错误")
-    PARAM_ERR = ("400-0422", "参数错误")
-
-    SYSTEM_ERR = ("500-0500", "系统异常")
-    SOCKET_ERR = ("500-0501", "网络异常")
-    GATEWAY_ERR = ("500-0502", "网关异常")
-
-    @property
-    def code(self):
-        return self.value
-
-    @property
-    def msg(self):
-        return self.desc
+    # 用户模块
+    USER_PWD_ERR = BaseErrCode("201-0001", "账号或密码错误")

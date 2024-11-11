@@ -8,10 +8,15 @@ import time
 from fastapi import Request
 from fastapi.middleware import Middleware
 from fastapi.responses import Response
+from py_tools.exceptions import BizException
 from py_tools.logging import logger
+from py_tools.utils import JWTUtil
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 
-from src.utils import TraceUtil
+from src import settings
+from src.dao.orm.managers import UserManager
+from src.enums import BizErrCodeEnum
+from src.utils import TraceUtil, context_util
 
 
 class LoggingMiddleware(BaseHTTPMiddleware):
@@ -68,9 +73,40 @@ class TraceReqMiddleware(BaseHTTPMiddleware):
         return response
 
 
+class AuthMiddleware(BaseHTTPMiddleware):
+    """鉴权中间件"""
+
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
+        logger.info(f"--> {request.method} {request.url.path} {request.client.host}")
+        if request.url.path.startswith(settings.auth_whitelist_urls):
+            # 白名单路由，直接放行
+            return await call_next(request)
+
+        # 其他路由，进行鉴权
+        token = request.headers.get("Authorization")
+        if not token:
+            raise BizException(err_code=BizErrCodeEnum.AUTH_ERR)
+
+        # 验证token
+        user_info = JWTUtil.verify_token(token)
+        if not user_info:
+            raise BizException(err_code=BizErrCodeEnum.AUTH_ERR)
+
+        # 保存用户信息到上下文中
+        user_id = user_info["user_id"]
+        user = await UserManager().query_by_id(user_id)
+        if not user:
+            raise BizException(err_code=BizErrCodeEnum.FORBIDDEN_ERR)
+        context_util.USER_CTX.set(user)
+
+        response = await call_next(request)
+        return response
+
+
 def register_middlewares():
-    """注册中间件"""
+    """注册中间件（逆序执行）"""
     return [
         # Middleware(LoggingMiddleware),
         Middleware(TraceReqMiddleware),
+        Middleware(AuthMiddleware),
     ]
