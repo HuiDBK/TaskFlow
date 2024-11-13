@@ -4,14 +4,10 @@
 # @Desc: { 通用逻辑 }
 # @Date: 2023/08/29 16:46
 from src.settings import auth_setting
-from src.utils import context_util
+from src.utils.context_util import ContextMixin
 
 
-class BaseService:
+class BaseService(ContextMixin):
     @property
     def auth_settings(self):
         return auth_setting
-
-    @property
-    def current_user(self):
-        return context_util.USER_CTX.get()

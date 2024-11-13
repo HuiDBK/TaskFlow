@@ -6,6 +6,7 @@
 from datetime import datetime
 
 from py_tools.connections.db.mysql import BaseOrmTable
+from sqlalchemy import JSON, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 
@@ -13,9 +14,12 @@ class ProjectTable(BaseOrmTable):
     """项目表"""
 
     __tablename__ = "project"
-    project_name: Mapped[str] = mapped_column(comment="项目名称")
-    project_desc: Mapped[str] = mapped_column(comment="项目描述")
+    project_name: Mapped[str] = mapped_column(String(100), comment="项目名称")
+    project_desc: Mapped[str] = mapped_column(String(1024), comment="项目描述")
     project_status: Mapped[int] = mapped_column(default=0, comment="项目状态")
-    project_icon: Mapped[str] = mapped_column(default="", comment="项目展示图")
+    project_tags: Mapped[list] = mapped_column(JSON, default=[], comment="项目标签")
+    project_type: Mapped[int] = mapped_column(default=0, comment="项目类型")
+    project_priority: Mapped[int] = mapped_column(default=0, comment="项目优先级")
+    project_icon: Mapped[str] = mapped_column(String(100), default="", comment="项目展示图")
     start_time: Mapped[datetime] = mapped_column(comment="项目开始时间")
     end_time: Mapped[datetime] = mapped_column(comment="项目结束时间")

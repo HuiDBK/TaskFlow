@@ -10,7 +10,8 @@ import datetime
 auth_whitelist_urls = (
     "/docs",
     "/redoc",
-    "/openapi.json",
+    "/openapi",
+    "/api/ping",
     "/api/v1/users/login",
     "/api/v1/users/register",
 )

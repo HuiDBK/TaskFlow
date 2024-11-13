@@ -4,13 +4,13 @@
 # @File: user_manager.py
 # @Desc: { 模块描述 }
 # @Date: 2024/11/11 15:19
-from py_tools.connections.db.mysql import DBManager
 from py_tools.utils import RegexUtil
 
+from src.dao.orm.managers.base import BaseManager
 from src.dao.orm.tables.user import UserTable
 
 
-class UserManager(DBManager):
+class UserManager(BaseManager):
     orm_table = UserTable
 
     async def user_login(self, account: str, password: str) -> UserTable:

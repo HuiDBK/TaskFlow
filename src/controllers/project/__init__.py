@@ -3,4 +3,4 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/08/30 12:10
-from .project_controllers import ProjectControllers, ProjectDetailControllers
+from .project_controllers import ProjectController, ProjectDetailControllers

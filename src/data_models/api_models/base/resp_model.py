@@ -20,12 +20,29 @@ class SuccessRespModel(BaseRespModel):
     data: dict = Field(default={}, description="响应数据")
 
 
+class PageDataModel(BaseModel):
+    total: int = Field(description="总条数")
+    data_list: list = Field(description="分页数据列表")
+
+
+class PageRespModel(BaseRespModel):
+    data: PageDataModel = Field(..., description="分页数据")
+
+    def __init__(self, total: int, data_list: list, **kwargs):
+        super().__init__(**kwargs)
+        self.data = PageDataModel(total=total, data_list=data_list)
+
+
 class PKModel(BaseModel):
     id: int = Field(description="主键id")
 
 
 class PKRespModel(SuccessRespModel):
     data: PKModel = Field(description="主键响应模型")
+
+    def __init__(self, pk_id: int, **kwargs):
+        super().__init__(**kwargs)
+        self.data = PKModel(id=pk_id)
 
 
 class TokenModel(BaseModel):

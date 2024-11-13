@@ -4,10 +4,16 @@
 # @Desc: { DAO层初始化模块 }
 # @Date: 2023/08/29 16:56
 
-from py_tools.connections.db.mysql import DBManager, SQLAlchemyManager
+from py_tools.connections.db.mysql import DBManager, SQLAlchemyManager, BaseOrmTable
 
 from src import settings
 from src.dao.redis import RedisManager
+
+
+async def init_tables():
+    # 根据映射初始化库表
+    async with DBManager.connection() as conn:
+        await conn.run_sync(BaseOrmTable.metadata.create_all)
 
 
 async def init_orm():
@@ -21,6 +27,8 @@ async def init_orm():
     )
     db_client.init_mysql_engine()
     DBManager.init_db_client(db_client)
+
+    await init_tables()
     return db_client
 
 

@@ -4,10 +4,11 @@
 # @Desc: { 模块描述 }
 # @Date: 2023/09/06 11:38
 from py_tools.connections.db.mysql import BaseOrmTable
+from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
 
 class TagTable(BaseOrmTable):
     __tablename__ = "tag"
-    tag: Mapped[str] = mapped_column(comment="标签内容")
+    tag: Mapped[str] = mapped_column(String(100), comment="标签内容")
     parent_id: Mapped[int] = mapped_column(default=0, comment="父级id")

@@ -10,22 +10,23 @@ from py_tools.logging import logger
 from py_tools.utils import JWTUtil
 
 from src.dao.orm.managers import UserManager
+from src.dao.orm.managers.project_manager import ProjectManager
 from src.data_models.api_models.user import UserLoginIn, UserRegisterIn
 from src.enums import BizErrCodeEnum
 from src.services.base import BaseService
 
 
-class UserLoginRegisterService(BaseService):
+class UserService(BaseService):
     async def login(self, login_info: UserLoginIn):
         user = await UserManager().user_login(login_info.account, login_info.password)
         if not user:
             raise BizException(err_code=BizErrCodeEnum.USER_PWD_ERR)
 
-        token = await self.gen_user_token(user_id=user.id, username=user.username)
+        token = self.gen_user_token(user_id=user.id, username=user.username)
         logger.info(f"login success, user: {user}")
         return token
 
-    async def gen_user_token(self, user_id: int, username: str) -> str:
+    def gen_user_token(self, user_id: int, username: str) -> str:
         user_info = {"user_id": user_id, "username": username}
         jwt_util = JWTUtil(secret_key=self.auth_settings.auth_secret_key, algorithm=self.auth_settings.auth_algorithm)
         token = jwt_util.generate_token(data=user_info, expires_delta=self.auth_settings.auth_expires_delta)
@@ -37,9 +38,17 @@ class UserLoginRegisterService(BaseService):
         user_info = register_info.model_dump(exclude_none=True)
         user_id = await UserManager().add(user_info)
 
+        # bind default project
+        await ProjectManager().create_user_default_todo_project(user_id)
+
         # gen jwt
         user_info.pop("password", None)
         user_info["user_id"] = user_id
-        token = await self.gen_user_token(user_id=user_id, username=register_info.username)
+        token = self.gen_user_token(user_id=user_id, username=register_info.username)
         logger.info(f"register success, user: {register_info}")
         return token
+
+    def verify_user_token(self, token: str):
+        jwt_util = JWTUtil(secret_key=self.auth_settings.auth_secret_key, algorithm=self.auth_settings.auth_algorithm)
+        user_info = jwt_util.verify_token(token=token)
+        return user_info

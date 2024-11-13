@@ -6,7 +6,7 @@
 from src.controllers.base import BaseController
 from src.data_models.api_models import user
 from src.data_models.api_models.base.resp_model import TokenRespModel
-from src.services.user.login_register import UserLoginRegisterService
+from src.services.user.user_service import UserService
 
 
 class UserRegisterController(BaseController):
@@ -15,12 +15,12 @@ class UserRegisterController(BaseController):
     @classmethod
     async def login(cls, req_model: user.UserLoginIn):
         # 业务逻辑处理
-        token = await UserLoginRegisterService().login(req_model)
+        token = await UserService().login(req_model)
 
         # 响应返参
         return TokenRespModel(token=token)
 
     @classmethod
     async def register(cls, req_model: user.UserRegisterIn):
-        token = await UserLoginRegisterService().register(req_model)
+        token = await UserService().register(req_model)
         return TokenRespModel(token=token)

@@ -8,7 +8,7 @@ from http import HTTPStatus
 from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from py_tools.exceptions.base import BizException
+from py_tools.exceptions import BizException
 from py_tools.logging import logger
 
 from src.enums import BizErrCodeEnum
@@ -48,7 +48,7 @@ async def global_exception_handler(request: Request, exc: Exception):
     return JSONResponse(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, content=web.fail_api_resp_with_err_enum(err_enum))
 
 
-def biz_error_handler(request: Request, exc: BizException):
+async def biz_error_handler(request: Request, exc: BizException):
     """业务错误处理"""
     logger.error(f"biz_error_handler {exc}")
     return JSONResponse(status_code=HTTPStatus.OK, content=web.fail_api_resp(exc.msg))

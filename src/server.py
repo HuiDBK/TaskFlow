@@ -1,8 +1,10 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
+from fastapi.security import HTTPBearer
 from py_tools.logging import logger
 
+from src import dao
 from src.middlewares import register_middlewares
 from src.middlewares.error_handler import register_exception_handler
 from src.routers import api_router
@@ -16,9 +18,17 @@ async def lifespan(app: FastAPI):
     await shutdown()
 
 
+security = HTTPBearer()
+
+
+async def get_token(authorization: str = Depends(security)) -> str:
+    return authorization
+
+
 app = FastAPI(
     description="任务管理系统",
     lifespan=lifespan,
+    dependencies=[Depends(get_token)],
     middleware=register_middlewares(),  # 注册web中间件
     exception_handlers=register_exception_handler(),  # 注册web错误处理
 )
@@ -29,7 +39,7 @@ async def init_setup():
 
     log_util.setup_logger()
 
-    # await dao.init_orm()
+    await dao.init_orm()
     # await dao.init_redis()
 
 

@@ -4,19 +4,21 @@
 # @Desc: { 模块描述 }
 # @Date: 2023/07/11 12:17
 import time
+from http import HTTPStatus
 
 from fastapi import Request
 from fastapi.middleware import Middleware
 from fastapi.responses import Response
-from py_tools.exceptions import BizException
+from py_tools.enums.error import BaseErrCode
 from py_tools.logging import logger
-from py_tools.utils import JWTUtil
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
+from starlette.responses import JSONResponse
 
 from src import settings
 from src.dao.orm.managers import UserManager
 from src.enums import BizErrCodeEnum
-from src.utils import TraceUtil, context_util
+from src.services.user.user_service import UserService
+from src.utils import TraceUtil, context_util, web
 
 
 class LoggingMiddleware(BaseHTTPMiddleware):
@@ -76,6 +78,10 @@ class TraceReqMiddleware(BaseHTTPMiddleware):
 class AuthMiddleware(BaseHTTPMiddleware):
     """鉴权中间件"""
 
+    @staticmethod
+    def set_auth_err_resp(err_code: BaseErrCode = BizErrCodeEnum.AUTH_ERR):
+        return JSONResponse(status_code=HTTPStatus.OK, content=web.fail_api_resp(err_code.msg))
+
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         logger.info(f"--> {request.method} {request.url.path} {request.client.host}")
         if request.url.path.startswith(settings.auth_whitelist_urls):
@@ -83,20 +89,23 @@ class AuthMiddleware(BaseHTTPMiddleware):
             return await call_next(request)
 
         # 其他路由，进行鉴权
-        token = request.headers.get("Authorization")
+        token = request.headers.get("Authorization") or ""
+        token = token.replace("Bearer ", "")
+        print("token:", token)
+
         if not token:
-            raise BizException(err_code=BizErrCodeEnum.AUTH_ERR)
+            return self.set_auth_err_resp()
 
         # 验证token
-        user_info = JWTUtil.verify_token(token)
+        user_info = UserService().verify_user_token(token)
         if not user_info:
-            raise BizException(err_code=BizErrCodeEnum.AUTH_ERR)
+            return self.set_auth_err_resp()
 
         # 保存用户信息到上下文中
         user_id = user_info["user_id"]
         user = await UserManager().query_by_id(user_id)
         if not user:
-            raise BizException(err_code=BizErrCodeEnum.FORBIDDEN_ERR)
+            return self.set_auth_err_resp(err_code=BizErrCodeEnum.FORBIDDEN_ERR)
         context_util.USER_CTX.set(user)
 
         response = await call_next(request)
