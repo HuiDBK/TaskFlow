@@ -18,7 +18,7 @@ async def lifespan(app: FastAPI):
     await shutdown()
 
 
-security = HTTPBearer()
+security = HTTPBearer(auto_error=False)
 
 
 async def get_token(authorization: str = Depends(security)) -> str:

@@ -3,6 +3,8 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/09/04 14:04
+from fastapi import Depends
+
 from src.controllers.base import BaseController
 from src.data_models.api_models import project
 from src.data_models.api_models.base import PageRespModel, PKRespModel, SuccessRespModel
@@ -23,7 +25,7 @@ class ProjectController(BaseController):
         return SuccessRespModel()
 
     @classmethod
-    async def query_list_project(cls, req_model: project.ProjectQueryIn):
+    async def query_list_project(cls, req_model=Depends(project.ProjectQueryIn)):
         total, data_list = await ProjectService().list_projects(req_model)
         return PageRespModel(total=total, data_list=data_list)
 

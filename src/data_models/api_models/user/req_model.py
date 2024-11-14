@@ -26,5 +26,5 @@ class UserRegisterIn(BaseModel):
 
 
 class UserLoginIn(BaseModel):
-    account: str = Field(..., min_length=1, max_length=10, description="用户账号（用户名/手机号/邮箱）")
+    account: str = Field(..., min_length=1, max_length=20, description="用户账号（用户名/手机号/邮箱）")
     password: str = Field(..., min_length=6, max_length=12, description="用户密码")

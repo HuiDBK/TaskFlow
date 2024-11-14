@@ -36,10 +36,12 @@ class UserService(BaseService):
         """用户注册"""
         # save to db
         user_info = register_info.model_dump(exclude_none=True)
-        user_id = await UserManager().add(user_info)
 
-        # bind default project
-        await ProjectManager().create_user_default_todo_project(user_id)
+        async with UserManager.transaction() as session:
+            user_id = await UserManager(session).add(user_info)
+
+            # bind default project
+            await ProjectManager(session).create_user_default_todo_project(user_id)
 
         # gen jwt
         user_info.pop("password", None)

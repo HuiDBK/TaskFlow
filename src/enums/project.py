@@ -7,6 +7,7 @@ from py_tools.enums import IntEnum
 
 
 class ProjectStatusEnum(IntEnum):
+    default = 0  # 默认
     pending = 1  # 进行中
     finished = 2  # 已完成
     overdue = 3  # 已超期
@@ -14,6 +15,7 @@ class ProjectStatusEnum(IntEnum):
 
 
 class ProjectPriority(IntEnum):
+    default = 0  # 默认
     low = 1  # 低
     middle = 2  # 中
     high = 3  # 高

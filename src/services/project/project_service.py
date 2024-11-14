@@ -23,7 +23,7 @@ class ProjectService(BaseService):
 
     async def delete_project(self, project_ids: list[int], user_id: int = None):
         user_id = user_id or self.current_user().id
-        can_project_ids = await UserProjectManager().get_user_project_ids(user_id, project_ids)
+        can_project_ids = await UserProjectManager().get_user_project_ids([user_id], project_ids)
         return await ProjectManager().delete_projects(can_project_ids)
 
     async def update_project(self, project: ProjectUpdateIn):
@@ -37,14 +37,15 @@ class ProjectService(BaseService):
         conds = [UserProjectMappingTable.user_id == user_id]
         if project_query_model.project_name:
             # 项目名称模糊查询
-            conds.append(ProjectTable.project_name.like(project_query_model.project_name))
+            conds.append(ProjectTable.project_name.like(f"%{project_query_model.project_name}%"))
 
         if project_query_model.project_priority:
             # 项目优先级查询
             conds.append(ProjectTable.project_priority == project_query_model.project_priority)
 
         total, data_list = await ProjectManager().list_page(
-            join_tables=(UserProjectMappingTable, ProjectTable.id == UserProjectMappingTable.project_id),
+            cols=ProjectTable.all_columns(),
+            join_tables=[(UserProjectMappingTable, ProjectTable.id == UserProjectMappingTable.project_id)],
             conds=conds,
             curr_page=project_query_model.current_page,
             page_size=project_query_model.page_size,

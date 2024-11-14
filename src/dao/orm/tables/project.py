@@ -23,3 +23,10 @@ class ProjectTable(BaseOrmTable):
     project_icon: Mapped[str] = mapped_column(String(100), default="", comment="项目展示图")
     start_time: Mapped[datetime] = mapped_column(comment="项目开始时间")
     end_time: Mapped[datetime] = mapped_column(comment="项目结束时间")
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} {self.to_dict()}>"
+
+    @classmethod
+    def all_columns(cls):
+        return [column for column in cls.__table__.columns]

@@ -14,13 +14,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class BaseManager(DBManager):
+    def __init__(self, session: AsyncSession = None):
+        self.session = session
+
     @with_session
     async def _query(
         self,
         *,
         cols: list = None,
         orm_table: BaseOrmTable = None,
-        join_tables: tuple = None,
+        join_tables: list = None,
         conds: list = None,
         orders: list = None,
         limit: int = None,
@@ -32,8 +35,8 @@ class BaseManager(DBManager):
         Args:
             cols: 查询的列表字段
             orm_table: orm表映射类
-            join_tables: 连表信息(table, conds, join_type)
-                eg: (UserProjectMappingTable, ProjectTable.id == UserProjectMappingTable.project_id, "left")
+            join_tables: 连表信息 [(table, conds, join_type), ...]
+                eg: [(UserProjectMappingTable, ProjectTable.id == UserProjectMappingTable.project_id, "left")]
             conds: 查询的条件列表
             orders: 排序列表, 默认id升序
             limit: 限制数量大小
@@ -46,12 +49,24 @@ class BaseManager(DBManager):
         cols = cols or []
         cols = [column(col_obj) if isinstance(col_obj, str) else col_obj for col_obj in cols]  # 兼容字符串列表
 
+        join_tables = join_tables or []
         conditions = conds or []
-        orders = orders or [column("id")]
+        orders = orders or []
         orm_table = orm_table or self.orm_table
 
         # 构造查询
-        query_sql = select(*cols).select_from(orm_table)
+        if not cols:
+            if join_tables:
+                # 没有指定查询列，查询连表的所有列
+                all_tables = [orm_table] + [join_table[0] for join_table in join_tables]
+                cols = [col for table in all_tables for col in table.__table__.columns]
+                query_sql = select(*cols).select_from(orm_table)
+            else:
+                # 没有指定查询列，没有连表，查询所有列（返回orm 实例）
+                query_sql = select(orm_table)
+
+        else:
+            query_sql = select(*cols).select_from(orm_table)
 
         # 构造连表
         if join_tables:
@@ -65,12 +80,12 @@ class BaseManager(DBManager):
         cursor_result = await session.execute(query_sql)
         return cursor_result
 
-    async def _build_join(self, join_tables: tuple, query_sql):
+    async def _build_join(self, join_tables: list, query_sql):
         """
         构造连表
         Args:
-            join_tables: 连表信息(table, conds, join_type)
-                eg: (UserProjectMappingTable, ProjectTable.id == UserProjectMappingTable.project_id, "left")
+            join_tables: 连表信息 [(table, conds, join_type)]
+                eg: [(UserProjectMappingTable, ProjectTable.id == UserProjectMappingTable.project_id, "left")]
             query_sql: 查询sql
 
         Returns:
@@ -98,7 +113,7 @@ class BaseManager(DBManager):
         *,
         cols: list = None,
         orm_table: Type[BaseOrmTable] = None,
-        join_tables: tuple = None,
+        join_tables: list = None,
         conds: list = None,
         orders: list = None,
         flat: bool = False,
@@ -155,6 +170,9 @@ class BaseManager(DBManager):
         else:
             # 未指定列名查询默认全部字段，返回的是表实例对象 BaseOrmTable()
             # eg: select id, username, age from user where id=1 => UserTable(id=1, username="hui", age=18)
+            if join_tables:
+                # 连表还是返回 dict
+                return cursor_result.mappings().one() or {}
             return cursor_result.scalar_one()
 
     @with_session
@@ -163,7 +181,7 @@ class BaseManager(DBManager):
         *,
         cols: list = None,
         orm_table: BaseOrmTable = None,
-        join_tables: tuple = None,
+        join_tables: list = None,
         conds: list = None,
         orders: list = None,
         flat: bool = False,
@@ -176,8 +194,8 @@ class BaseManager(DBManager):
         Args:
             cols: 查询的列表字段
             orm_table: orm表映射类
-            join_tables: 连表信息(table, conds, join_type)
-                eg: (UserProjectMappingTable, ProjectTable.id == UserProjectMappingTable.project_id, "left")
+            join_tables: 连表信息[(table, conds, join_type)]
+                eg: [(UserProjectMappingTable, ProjectTable.id == UserProjectMappingTable.project_id, "left")]
             conds: 查询的条件列表
             orders: 排序列表
             flat: 单字段时扁平化处理
@@ -204,7 +222,12 @@ class BaseManager(DBManager):
             # eg: select username, age from user => [{"username": "hui", "age": 18}, [{"username": "dbk", "age": 18}]]
             return cursor_result.mappings().all() or []
         else:
-            # 未指定列名查询默认全部字段，返回的是表实例对象 [BaseOrmTable()]
+            # 未指定列名查询默认全部字段，
+            if join_tables:
+                # 连表查询还是返回 dict 列表
+                return cursor_result.mappings().all() or []
+
+            # 返回的是表实例对象 [BaseOrmTable()]
             # eg: select id, username, age from user
             # [User(id=1, username="hui", age=18), User(id=2, username="dbk", age=18)
             return cursor_result.scalars().all()
@@ -213,7 +236,7 @@ class BaseManager(DBManager):
         self,
         cols: list = None,
         orm_table: BaseOrmTable = None,
-        join_tables: tuple = None,
+        join_tables: list = None,
         conds: list = None,
         orders: list = None,
         curr_page: int = 1,
@@ -225,8 +248,8 @@ class BaseManager(DBManager):
         Args:
             cols: 查询的列表字段
             orm_table: orm表映射类
-            join_tables: 连表信息(table, conds, join_type)
-                eg: (UserProjectMappingTable, ProjectTable.id == UserProjectMappingTable.project_id, "left")
+            join_tables: 连表信息[(table, conds, join_type)]
+                eg: [(UserProjectMappingTable, ProjectTable.id == UserProjectMappingTable.project_id, "left")]
             conds: 查询的条件列表
             orders: 排序列表
             curr_page: 页码
@@ -236,7 +259,7 @@ class BaseManager(DBManager):
         Returns: total_count, data_list
         """
         conds = conds or []
-        orders = orders or [column("id")]
+        orders = orders or []
         orm_table = orm_table or self.orm_table
 
         limit = page_size

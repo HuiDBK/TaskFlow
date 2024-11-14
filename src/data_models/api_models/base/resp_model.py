@@ -21,12 +21,12 @@ class SuccessRespModel(BaseRespModel):
 
 
 class PageDataModel(BaseModel):
-    total: int = Field(description="总条数")
-    data_list: list = Field(description="分页数据列表")
+    total: int = Field(default=0, description="总条数")
+    data_list: list = Field(default=[], description="分页数据列表")
 
 
-class PageRespModel(BaseRespModel):
-    data: PageDataModel = Field(..., description="分页数据")
+class PageRespModel(SuccessRespModel):
+    data: PageDataModel = Field(None, description="分页数据")
 
     def __init__(self, total: int, data_list: list, **kwargs):
         super().__init__(**kwargs)
@@ -38,7 +38,7 @@ class PKModel(BaseModel):
 
 
 class PKRespModel(SuccessRespModel):
-    data: PKModel = Field(description="主键响应模型")
+    data: PKModel = Field(None, description="主键响应模型")
 
     def __init__(self, pk_id: int, **kwargs):
         super().__init__(**kwargs)

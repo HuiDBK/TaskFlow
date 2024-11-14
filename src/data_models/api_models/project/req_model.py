@@ -6,6 +6,7 @@
 from datetime import datetime
 from typing import List, Optional
 
+from fastapi import Query
 from pydantic import BaseModel, Field
 
 from src.data_models.api_models.base import ListPageBaseModel
@@ -26,6 +27,9 @@ class ProjectCreateIn(BaseModel):
     project_tags: Optional[List[str]] = Field(description="项目标签")
     project_icon: Optional[str] = Field(description="项目展示图地址-oss key")
 
+    class Config:
+        use_enum_values = True
+
 
 class ProjectUpdateIn(BaseModel):
     """项目更新入参"""
@@ -45,8 +49,8 @@ class ProjectUpdateIn(BaseModel):
 class ProjectQueryIn(ListPageBaseModel):
     """项目查找入参"""
 
-    project_name: Optional[str] = Field(default=None, description="项目名称模糊查询")
-    project_priority: Optional[ProjectPriority] = Field(default=None, description="项目优先级")
+    project_name: Optional[str] = Field(Query(default=None, description="项目名称模糊查询"))
+    project_priority: Optional[ProjectPriority] = Field(Query(default=None, description="项目优先级"))
 
 
 class ProjectDeleteIn(BaseModel):
