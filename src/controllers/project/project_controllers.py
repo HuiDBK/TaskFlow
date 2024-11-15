@@ -25,7 +25,7 @@ class ProjectController(BaseController):
         return SuccessRespModel()
 
     @classmethod
-    async def query_list_project(cls, req_model=Depends(project.ProjectQueryIn)):
+    async def query_projects(cls, req_model=Depends(project.ProjectQueryIn)):
         total, data_list = await ProjectService().list_projects(req_model)
         return PageRespModel(total=total, data_list=data_list)
 

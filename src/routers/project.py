@@ -28,7 +28,7 @@ router.add_api_route(
 
 router.add_api_route(
     path="/v1/projects",
-    endpoint=ProjectController.query_list_project,
+    endpoint=ProjectController.query_projects,
     response_model=project_api.ProjectListOut,
     methods=["GET"],
     summary="项目分页查询",

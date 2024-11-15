@@ -5,12 +5,13 @@
 # @Date: 2023/09/05 17:53
 from datetime import datetime
 
-from py_tools.connections.db.mysql import BaseOrmTable
 from sqlalchemy import JSON, String
 from sqlalchemy.orm import Mapped, mapped_column
 
+from src.dao.orm.tables import BaseTable
 
-class ProjectTable(BaseOrmTable):
+
+class ProjectTable(BaseTable):
     """项目表"""
 
     __tablename__ = "project"
@@ -21,12 +22,5 @@ class ProjectTable(BaseOrmTable):
     project_type: Mapped[int] = mapped_column(default=0, comment="项目类型")
     project_priority: Mapped[int] = mapped_column(default=0, comment="项目优先级")
     project_icon: Mapped[str] = mapped_column(String(100), default="", comment="项目展示图")
-    start_time: Mapped[datetime] = mapped_column(comment="项目开始时间")
-    end_time: Mapped[datetime] = mapped_column(comment="项目结束时间")
-
-    def __repr__(self):
-        return f"<{self.__class__.__name__} {self.to_dict()}>"
-
-    @classmethod
-    def all_columns(cls):
-        return [column for column in cls.__table__.columns]
+    start_time: Mapped[datetime] = mapped_column(nullable=True, comment="项目开始时间")
+    end_time: Mapped[datetime] = mapped_column(nullable=True, comment="项目结束时间")

@@ -3,12 +3,13 @@
 # @Author: zxq
 # @Desc: { 用户数据表模型 }
 # @Date: 2023/08/29 16:56
-from py_tools.connections.db.mysql import BaseOrmTable
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
+from src.dao.orm.tables import BaseTable
 
-class UserTable(BaseOrmTable):
+
+class UserTable(BaseTable):
     """用户表"""
 
     __tablename__ = "user"

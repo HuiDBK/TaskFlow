@@ -3,7 +3,8 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/08/30 11:29
-from pydantic import BaseModel, Field
+from py_tools.utils import SerializerUtil
+from pydantic import BaseModel, Field, field_validator
 
 from src.enums import BizErrCodeEnum
 
@@ -23,6 +24,13 @@ class SuccessRespModel(BaseRespModel):
 class PageDataModel(BaseModel):
     total: int = Field(default=0, description="总条数")
     data_list: list = Field(default=[], description="分页数据列表")
+
+    @field_validator("data_list", mode="before")
+    def format_data_list(cls, data_list: list):
+        try:
+            return SerializerUtil.model_to_data(data_list)
+        except:
+            return data_list
 
 
 class PageRespModel(SuccessRespModel):
