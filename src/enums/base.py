@@ -22,3 +22,4 @@ class BizErrCodeEnum(BaseErrCodeEnum):
 
     # 用户模块
     USER_PWD_ERR = BaseErrCode("201-0001", "账号或密码错误")
+    USER_EXISTS = BaseErrCode("201-0002", "用户已存在")

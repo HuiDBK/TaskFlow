@@ -32,11 +32,30 @@ class UserService(BaseService):
         token = jwt_util.generate_token(data=user_info, expires_delta=self.auth_settings.auth_expires_delta)
         return token
 
+    async def verify_user_exists(self, username: str = None, phone: str = None, email: str = None):
+        err_msgs = []
+        if username and UserManager().user_exists(username=username):
+            err_msgs.append("用户名已存在")
+
+        if phone and UserManager().user_exists(phone=phone):
+            err_msgs.append("手机号已存在")
+
+        if email and UserManager().user_exists(email=email):
+            err_msgs.append("邮箱已存在")
+
+        if err_msgs:
+            raise BizException(err_code=BizErrCodeEnum.USER_EXISTS, msg=",".join(err_msgs))
+
     async def register(self, register_info: UserRegisterIn) -> str:
         """用户注册"""
-        # save to db
         user_info = register_info.model_dump(exclude_none=True)
 
+        # check if user exists
+        await self.verify_user_exists(
+            username=register_info.username, phone=register_info.phone, email=register_info.email
+        )
+
+        # save to db
         async with UserManager.transaction() as session:
             user_id = await UserManager(session).add(user_info)
 
