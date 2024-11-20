@@ -11,6 +11,14 @@ from src.routers.base import BaseAPIRouter
 router = BaseAPIRouter()
 
 router.add_api_route(
+    "/ping",
+    endpoint=HeartBeatController.heart,
+    methods=["get"],
+    response_model=SuccessRespModel,
+    summary="心跳",
+)
+
+router.add_api_route(
     "/files/upload",
     endpoint=FileUploadController.upload_file,
     response_model=common_api.UploadFileOut,
@@ -24,12 +32,4 @@ router.add_api_route(
     methods=["post"],
     response_model=common_api.BatchUploadFileOut,
     summary="多文件上传",
-)
-
-router.add_api_route(
-    "/ping",
-    endpoint=HeartBeatController.heart,
-    methods=["get"],
-    response_model=SuccessRespModel,
-    summary="心跳",
 )

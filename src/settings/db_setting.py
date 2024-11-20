@@ -11,6 +11,7 @@ mysql_port = 3306
 mysql_user = "root"
 mysql_password = "123456"
 mysql_dbname = "task_flow"
+sql_echo = False
 
 
 # redis服务配置

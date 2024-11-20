@@ -34,13 +34,13 @@ class UserService(BaseService):
 
     async def verify_user_exists(self, username: str = None, phone: str = None, email: str = None):
         err_msgs = []
-        if username and UserManager().user_exists(username=username):
+        if username and await UserManager().user_exists(username=username):
             err_msgs.append("用户名已存在")
 
-        if phone and UserManager().user_exists(phone=phone):
+        if phone and await UserManager().user_exists(phone=phone):
             err_msgs.append("手机号已存在")
 
-        if email and UserManager().user_exists(email=email):
+        if email and await UserManager().user_exists(email=email):
             err_msgs.append("邮箱已存在")
 
         if err_msgs:

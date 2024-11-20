@@ -26,7 +26,7 @@ async def init_orm():
         password=settings.mysql_password,
         db_name=settings.mysql_dbname,
     )
-    db_client.init_mysql_engine(echo=True)
+    db_client.init_mysql_engine(echo=settings.sql_echo)
     DBManager.init_db_client(db_client)
 
     await init_tables()

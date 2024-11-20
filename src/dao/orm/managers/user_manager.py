@@ -58,6 +58,6 @@ class UserManager(BaseManager):
         if phone:
             conds.append(UserTable.phone == phone)
 
-        conds = or_(*conds)
+        conds = [or_(*conds)]
         user = await UserManager().query_one(cols=[UserTable.id], conds=conds)
         return bool(user)

@@ -37,8 +37,6 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next) -> Response:
         start_time = time.perf_counter()
-        # 设置请求id
-        request_id = TraceUtil.set_req_id()
 
         # 打印请求信息
         logger.info(f"--> {request.method} {request.url.path} {request.client.host}")
@@ -60,7 +58,6 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         # 计算响应时间
         process_time = time.perf_counter() - start_time
         response.headers["X-Response-Time"] = f"{process_time:.2f}s"
-        response.headers["X-Request-ID"] = f"{request_id}"  # 记录同一个请求的唯一id
         logger.info(f"<-- {response.status_code} {request.url.path} (took: {process_time:.2f}s)\n")
 
         return response
@@ -83,7 +80,6 @@ class AuthMiddleware(BaseHTTPMiddleware):
         return JSONResponse(status_code=HTTPStatus.OK, content=web.fail_api_resp(err_code.msg))
 
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
-        logger.info(f"--> {request.method} {request.url.path} {request.client.host}")
         if request.url.path.startswith(settings.auth_whitelist_urls):
             # 白名单路由，直接放行
             return await call_next(request)
@@ -91,7 +87,6 @@ class AuthMiddleware(BaseHTTPMiddleware):
         # 其他路由，进行鉴权
         token = request.headers.get("Authorization") or ""
         token = token.replace("Bearer ", "")
-        print("token:", token)
 
         if not token:
             return self.set_auth_err_resp()

@@ -50,7 +50,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 async def biz_error_handler(request: Request, exc: BizException):
     """业务错误处理"""
-    logger.error(f"biz_error_handler {exc}")
+    logger.error(f"biz_error_handler {exc} {exc.msg}")
     return JSONResponse(status_code=HTTPStatus.OK, content=web.fail_api_resp(exc.msg))
 
 

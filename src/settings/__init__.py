@@ -10,6 +10,7 @@ from src.settings.db_setting import (
     mysql_password,
     mysql_port,
     mysql_user,
+    sql_echo,
     redis_db,
     redis_host,
     redis_password,
