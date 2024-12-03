@@ -19,7 +19,7 @@ router.add_api_route(
 )
 
 router.add_api_route(
-    path="/v1/projects",
+    path="/v1/projects/{project_id}",
     endpoint=ProjectController.update_project,
     response_model=SuccessRespModel,
     methods=["PUT"],

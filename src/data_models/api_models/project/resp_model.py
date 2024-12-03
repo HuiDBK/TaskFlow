@@ -9,21 +9,21 @@ from typing import List, Optional, Union
 from pydantic import BaseModel, Field
 
 from src.data_models.api_models.base import BaseRespModel, PageDataModel, PageRespModel
-from src.enums.project import ProjectPriority
+from src.enums.project import ProjectPriority, ProjectStatusEnum
 
 
-class ProjectQueryItem(BaseModel):
+class ProjectItem(BaseModel):
     """查找项目返参信息"""
 
     id: int = Field(description="项目唯一标识id")
     project_name: str = Field(description="项目名称")
     project_desc: str = Field(description="项目描述")
-    project_status: int = Field(description="项目状态")
+    project_status: ProjectStatusEnum = Field(description="项目状态")
     project_priority: ProjectPriority = Field(default=None, description="项目优先级")
     start_time: Union[datetime, None] = Field(description="项目开始时间")
     end_time: Union[datetime, None] = Field(description="项目结束时间")
-    project_tags: Optional[List[str]] = Field(default=None, description="项目标签")
-    project_icon: str = Field(..., description="项目展示图地址-oss key..此时返回的是一个URL")
+    project_tags: Optional[List[dict]] = Field(default=None, description="项目标签")
+    project_icon: str = Field(default=None, description="项目展示图地址-oss key..此时返回的是一个URL")
 
 
 class ProjectDetailItem(BaseModel):
@@ -53,7 +53,7 @@ class ProjectDetailOut(BaseRespModel):
 
 
 class ProjectListData(PageDataModel):
-    data_list: List[ProjectQueryItem] = Field(description="项目列表")
+    data_list: List[ProjectItem] = Field(description="项目列表")
 
 
 class ProjectListOut(PageRespModel):

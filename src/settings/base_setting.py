@@ -9,3 +9,8 @@ server_host = "127.0.0.1"
 server_port = 8000
 server_log_level = logging.WARNING
 server_access_log = True
+
+allow_origins = [
+    "*",
+    # "http://localhost:5173",
+]

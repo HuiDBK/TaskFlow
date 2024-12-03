@@ -3,7 +3,7 @@
 # @Author: Hui
 # @Desc: { 项目配置包初始化 }
 # @Date: 2023/09/07 16:38
-from src.settings.base_setting import server_host, server_log_level, server_port, server_access_log
+from src.settings.base_setting import server_host, server_log_level, server_port, server_access_log, allow_origins
 from src.settings.db_setting import (
     mysql_dbname,
     mysql_host,

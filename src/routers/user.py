@@ -12,7 +12,7 @@ router = BaseAPIRouter()
 router.add_api_route(
     path="/v1/users/login",
     endpoint=UserRegisterController.login,
-    response_model=base_api.SuccessRespModel,
+    response_model=base_api.TokenRespModel,
     methods=["POST"],
     summary="用户登录",
 )

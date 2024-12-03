@@ -30,7 +30,8 @@ class ProjectController(BaseController):
         return PageRespModel(total=total, data_list=data_list)
 
     @classmethod
-    async def update_project(cls, req_model: project.ProjectUpdateIn):
+    async def update_project(cls, project_id: int, req_model: project.ProjectUpdateIn):
+        req_model.id = project_id
         await ProjectService().update_project(req_model)
         return SuccessRespModel()
 

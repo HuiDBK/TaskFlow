@@ -8,6 +8,7 @@ from http import HTTPStatus
 
 from fastapi import Request
 from fastapi.middleware import Middleware
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from py_tools.enums.error import BaseErrCode
 from py_tools.logging import logger
@@ -111,6 +112,12 @@ def register_middlewares():
     """注册中间件（逆序执行）"""
     return [
         # Middleware(LoggingMiddleware),
+        Middleware(
+            CORSMiddleware,
+            allow_origins=settings.allow_origins,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        ),
         Middleware(TraceReqMiddleware),
         Middleware(AuthMiddleware),
     ]
