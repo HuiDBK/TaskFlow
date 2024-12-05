@@ -78,7 +78,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
     @staticmethod
     def set_auth_err_resp(err_code: BaseErrCode = BizErrCodeEnum.AUTH_ERR):
-        return JSONResponse(status_code=HTTPStatus.OK, content=web.fail_api_resp(err_code.msg))
+        return JSONResponse(status_code=HTTPStatus.OK, content=web.fail_api_resp_with_err_enum(err_code))
 
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         if request.url.path.startswith(settings.auth_whitelist_urls):
@@ -108,6 +108,21 @@ class AuthMiddleware(BaseHTTPMiddleware):
         return response
 
 
+class GlobalExceptionMiddleware(BaseHTTPMiddleware):
+    """全局异常处理中间件"""
+
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
+        try:
+            response = await call_next(request)
+            return response
+        except Exception as e:
+            logger.exception(f"Global unhandled exception: {e}")
+            return JSONResponse(
+                status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+                content=web.fail_api_resp_with_err_enum(BizErrCodeEnum.SYSTEM_ERR),
+            )
+
+
 def register_middlewares():
     """注册中间件（逆序执行）"""
     return [
@@ -120,4 +135,5 @@ def register_middlewares():
         ),
         Middleware(TraceReqMiddleware),
         Middleware(AuthMiddleware),
+        Middleware(GlobalExceptionMiddleware),
     ]

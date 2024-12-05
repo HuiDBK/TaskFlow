@@ -35,14 +35,22 @@ class TaskService(BaseService):
             conds=[TaskTable.project_id == project_id, TaskTable.user_id == user_id, TaskTable.id.in_(task_ids)]
         )
 
-    async def update_task(self, task: TaskUpdateIn, user_id: int = None):
+    async def update_task(self, project_id: int, task: TaskUpdateIn, user_id: int = None):
         user_id = user_id or self.current_user().id
-        task_info = task.model_dump(exclude_none=True)
+        task_info = task.model_dump(exclude_none=True, exclude_unset=True)
 
+        await self.validate_project_task(project_id, [task.id])
         await self.validate_user_task(user_id, [task.id])
 
         update_ret = await TaskManager().update_or_add(task_info)
         return update_ret
+
+    async def query_user_tasks(self, user_id: int = None):
+        user_id = user_id or self.current_user().id
+        tasks = await TaskManager().query_all(
+            conds=[TaskTable.user_id == user_id],
+        )
+        return tasks
 
     async def query_tasks(self, project_id: int, task_query_model: TaskQueryIn, user_id: int = None):
         """项目任务分页查询"""
@@ -56,8 +64,17 @@ class TaskService(BaseService):
             # 项目优先级查询
             conds.append(TaskTable.task_priority == task_query_model.task_priority)
 
+        if task_query_model.task_status:
+            # 项目状态查询
+            conds.append(TaskTable.task_status == task_query_model.task_status)
+
+        if task_query_model.start_time and task_query_model.end_time:
+            conds.append(TaskTable.start_time >= task_query_model.start_time)
+            conds.append(TaskTable.end_time <= task_query_model.end_time)
+
         total, data_list = await TaskManager().list_page(
             conds=conds,
+            orders=[TaskTable.end_time.asc()],
             curr_page=task_query_model.current_page,
             page_size=task_query_model.page_size,
         )

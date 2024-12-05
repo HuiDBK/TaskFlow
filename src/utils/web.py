@@ -3,6 +3,8 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/09/06 16:49
+from py_tools.enums.error import BaseErrCode
+
 from src.enums import BizErrCodeEnum
 
 
@@ -13,7 +15,7 @@ def success_api_resp(data=None):
     return resp_content
 
 
-def fail_api_resp_with_err_enum(err_enum: BizErrCodeEnum, err_msg: str = None, data=None):
+def fail_api_resp_with_err_enum(err_enum: BaseErrCode, err_msg: str = None, data=None):
     """失败的响应携带错误码"""
     resp_content = {
         "code": err_enum.code,

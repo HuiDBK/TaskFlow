@@ -19,7 +19,7 @@ router.add_api_route(
 )
 
 router.add_api_route(
-    path="/v1/projects/tasks",
+    path="/v1/projects/{project_id}/tasks",
     endpoint=TaskController.update_task,
     response_model=SuccessRespModel,
     methods=["PUT"],
@@ -27,15 +27,15 @@ router.add_api_route(
 )
 
 router.add_api_route(
-    path="/v1/projects/{project_id}/tasks}",
+    path="/v1/projects/{project_id}/tasks",
     endpoint=TaskController.query_tasks,
-    response_model=task_api.TaskQueryOut,
+    response_model=task_api.TaskListOut,
     methods=["GET"],
     summary="任务分页查询",
 )
 
 router.add_api_route(
-    path="/v1/projects/tasks",
+    path="/v1/projects/{project_id}/tasks",
     endpoint=TaskController.delete_task,
     response_model=SuccessRespModel,
     methods=["DELETE"],

@@ -34,20 +34,31 @@ class ProjectService(BaseService):
     async def list_projects(self, project_query_model: ProjectQueryIn, user_id: int = None):
         """项目分页查询"""
         user_id = user_id or self.current_user().id
-        conds = [UserProjectMappingTable.user_id == user_id]
-        if project_query_model.project_name:
-            # 项目名称模糊查询
-            conds.append(ProjectTable.project_name.like(f"%{project_query_model.project_name}%"))
-
-        if project_query_model.project_priority:
-            # 项目优先级查询
-            conds.append(ProjectTable.project_priority == project_query_model.project_priority)
+        conds = self.build_query_project_conds(project_query_model, user_id)
 
         total, data_list = await ProjectManager().list_page(
             cols=ProjectTable.all_columns(),
             join_tables=[(UserProjectMappingTable, ProjectTable.id == UserProjectMappingTable.project_id)],
             conds=conds,
+            orders=[ProjectTable.end_time.asc()],
             curr_page=project_query_model.current_page,
             page_size=project_query_model.page_size,
         )
         return total, data_list
+
+    def build_query_project_conds(self, project_query_model: ProjectQueryIn, user_id: int):
+        conds = [UserProjectMappingTable.user_id == user_id]
+        if project_query_model.project_name:
+            # 项目名称模糊查询
+            conds.append(ProjectTable.project_name.like(f"%{project_query_model.project_name}%"))
+        if project_query_model.project_priority:
+            # 项目优先级查询
+            conds.append(ProjectTable.project_priority == project_query_model.project_priority)
+        if project_query_model.project_status:
+            # 项目状态查询
+            conds.append(ProjectTable.project_status == project_query_model.project_status)
+        if project_query_model.start_time and project_query_model.end_time:
+            # 项目时间范围查询
+            conds.append(ProjectTable.start_time >= project_query_model.start_time)
+            conds.append(ProjectTable.end_time <= project_query_model.end_time)
+        return conds

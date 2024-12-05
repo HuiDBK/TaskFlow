@@ -3,7 +3,7 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/08/31 16:06
-from datetime import datetime
+from datetime import date, datetime
 from typing import List, Optional
 
 from fastapi import Query
@@ -50,6 +50,9 @@ class ProjectQueryIn(ListPageBaseModel):
 
     project_name: Optional[str] = Field(Query(default=None, description="项目名称模糊查询"))
     project_priority: Optional[ProjectPriority] = Field(Query(default=None, description="项目优先级"))
+    project_status: Optional[ProjectStatusEnum] = Field(Query(default=None, description="项目状态"))
+    start_time: Optional[date] = Field(Query(default=None, description="开始时间"))
+    end_time: Optional[date] = Field(Query(default=None, description="结束时间"))
 
 
 class ProjectDeleteIn(BaseModel):

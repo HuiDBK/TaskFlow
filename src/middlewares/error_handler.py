@@ -44,7 +44,7 @@ async def global_exception_handler(request: Request, exc: Exception):
         message = f"系统异常, {exc}"
         err_enum = BizErrCodeEnum.SYSTEM_ERR
 
-    logger.error(f"global_exception_handler {message}")
+    logger.exception(f"global_exception_handler {message}")
     return JSONResponse(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, content=web.fail_api_resp_with_err_enum(err_enum))
 
 
@@ -59,5 +59,5 @@ def register_exception_handler():
     return {
         RequestValidationError: validation_exception_handler,  # 请求参数校验错误处理
         BizException: biz_error_handler,  # 业务错误处理
-        Exception: global_exception_handler,  # 全局未捕获的异常处理
+        Exception: global_exception_handler,  # 全局未捕获的异常处理(默认走中间件处理)
     }
