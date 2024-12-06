@@ -4,6 +4,7 @@
 # @File: project_manager.py
 # @Desc: { 模块描述 }
 # @Date: 2024/11/11 18:15
+from datetime import datetime, timedelta
 
 from src.dao.orm.managers.base import BaseManager
 from src.dao.orm.tables import ProjectTable, UserProjectMappingTable
@@ -37,7 +38,11 @@ class ProjectManager(BaseManager):
     orm_table = ProjectTable
 
     async def create_user_default_todo_project(self, user_id: int, project_name="默认待办", project_desc="默认待办"):
-        project_id = await self.add(ProjectTable(project_name=project_name, project_desc=project_desc))
+        start_time = datetime.now()
+        end_time = start_time + timedelta(weeks=1)
+        project_id = await self.add(
+            ProjectTable(project_name=project_name, project_desc=project_desc, start_time=start_time, end_time=end_time)
+        )
         await UserProjectManager(self.session).bind_user_project(user_id, project_id)
         return project_id
 

@@ -13,9 +13,9 @@ class UserRegisterIn(BaseModel):
     """用户注册入参"""
 
     username: str = Field(..., min_length=1, max_length=10, description="用户昵称")
-    email: Optional[EmailStr] = Field(None, description="邮箱")
     password: str = Field(..., min_length=6, max_length=12, description="用户密码")
-    phone: str = Field(..., min_length=11, description="手机号")
+    email: Optional[EmailStr] = Field(default=None, description="邮箱")
+    phone: Optional[str] = Field(default=None, min_length=11, description="手机号")
 
     @field_validator("phone")
     def validate_phone(cls, phone: str):

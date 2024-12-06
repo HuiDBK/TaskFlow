@@ -38,6 +38,7 @@ class TaskUpdateIn(TaskCreateIn):
 class TaskQueryIn(ListPageBaseModel):
     """任务查找入参"""
 
+    project_ids: str = Field(Query(description="项目id, 多个用逗号隔开"))
     task_name: Optional[str] = Field(Query(default=None, description="任务名称模糊查询"))
     task_priority: Optional[TaskPriorityEnum] = Field(Query(default=None, description="项目优先级"))
     task_status: Optional[TaskStatusEnum] = Field(Query(default=None, description="项目状态"))

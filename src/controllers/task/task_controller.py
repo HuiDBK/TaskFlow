@@ -24,8 +24,8 @@ class TaskController:
         return SuccessRespModel()
 
     @classmethod
-    async def query_tasks(cls, project_id: int, req_model=Depends(task.TaskQueryIn)):
-        total, data_list = await TaskService().query_tasks(project_id, req_model)
+    async def query_tasks(cls, req_model=Depends(task.TaskQueryIn)):
+        total, data_list = await TaskService().query_tasks(req_model)
         return PageRespModel(total=total, data_list=data_list)
 
     async def query_user_tasks(self):

@@ -15,5 +15,5 @@ class UserTable(BaseTable):
     __tablename__ = "user"
     username: Mapped[str] = mapped_column(String(20), comment="用户昵称")
     password: Mapped[str] = mapped_column(String(20), comment="用户密码")
-    phone: Mapped[str] = mapped_column(String(11), comment="手机号")
-    email: Mapped[str] = mapped_column(String(20), comment="邮箱")
+    phone: Mapped[str] = mapped_column(String(11), default="", comment="手机号")
+    email: Mapped[str] = mapped_column(String(20), default="", comment="邮箱")

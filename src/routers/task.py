@@ -27,7 +27,7 @@ router.add_api_route(
 )
 
 router.add_api_route(
-    path="/v1/projects/{project_id}/tasks",
+    path="/v1/projects/tasks",
     endpoint=TaskController.query_tasks,
     response_model=task_api.TaskListOut,
     methods=["GET"],

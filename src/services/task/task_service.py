@@ -52,10 +52,11 @@ class TaskService(BaseService):
         )
         return tasks
 
-    async def query_tasks(self, project_id: int, task_query_model: TaskQueryIn, user_id: int = None):
+    async def query_tasks(self, task_query_model: TaskQueryIn, user_id: int = None):
         """项目任务分页查询"""
         user_id = user_id or self.current_user().id
-        conds = [TaskTable.user_id == user_id, TaskTable.project_id == project_id]
+        project_ids = list(map(int, task_query_model.project_ids.split(",")))
+        conds = [TaskTable.user_id == user_id, TaskTable.project_id.in_(project_ids)]
         if task_query_model.task_name:
             # 项目名称模糊查询
             conds.append(TaskTable.task_name.like(f"%{task_query_model.task_name}%"))
