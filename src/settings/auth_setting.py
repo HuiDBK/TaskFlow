@@ -14,8 +14,13 @@ auth_whitelist_urls = (
     "/api/ping",
     "/api/v1/users/login",
     "/api/v1/users/register",
+    "/api/v1/auth/github/callback",
 )
 
 auth_secret_key = "hasjdhaxbxasadjaklkj"
 auth_algorithm = "HS256"
 auth_expires_delta = datetime.timedelta(hours=6)
+
+
+github_client_id = "your_github_client_id"
+github_client_secret = "your_github_client_secret"

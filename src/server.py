@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from py_tools.connections.http import AsyncHttpClient
 from py_tools.logging import logger
 
 from src import dao
@@ -49,4 +50,5 @@ async def startup():
 
 
 async def shutdown():
+    await AsyncHttpClient.close()
     logger.error("app shutdown")

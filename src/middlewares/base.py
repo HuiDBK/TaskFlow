@@ -88,6 +88,12 @@ class AuthMiddleware(BaseHTTPMiddleware):
         # 其他路由，进行鉴权
         token = request.headers.get("Authorization") or ""
         token = token.replace("Bearer ", "")
+        logger.info(f"UserToken: {token}")
+
+        # oauth2.0 token 鉴权
+        oauth_token = request.cookies.get("oauth_token")
+        logger.info(f"OAuthToken: {oauth_token}")
+        token = token or oauth_token
 
         if not token:
             return self.set_auth_err_resp()
@@ -130,6 +136,7 @@ def register_middlewares():
         Middleware(
             CORSMiddleware,
             allow_origins=settings.allow_origins,
+            allow_credentials=True,
             allow_methods=["*"],
             allow_headers=["*"],
         ),

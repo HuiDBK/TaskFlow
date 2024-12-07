@@ -16,6 +16,7 @@ class UserRegisterIn(BaseModel):
     password: str = Field(..., min_length=6, max_length=12, description="用户密码")
     email: Optional[EmailStr] = Field(default=None, description="邮箱")
     phone: Optional[str] = Field(default=None, min_length=11, description="手机号")
+    github_uid: Optional[int] = Field(default=0, description="github uid")
 
     @field_validator("phone")
     def validate_phone(cls, phone: str):

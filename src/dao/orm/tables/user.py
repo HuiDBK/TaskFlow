@@ -17,3 +17,4 @@ class UserTable(BaseTable):
     password: Mapped[str] = mapped_column(String(20), comment="用户密码")
     phone: Mapped[str] = mapped_column(String(11), default="", comment="手机号")
     email: Mapped[str] = mapped_column(String(20), default="", comment="邮箱")
+    github_uid: Mapped[int] = mapped_column(default=0, comment="Github UID")
