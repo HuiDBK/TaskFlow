@@ -3,7 +3,7 @@ services:
   tf_mysql_server:
     image: mysql:8.0
     ports:
-      - "33306:33306"
+      - "33306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=task_flow
@@ -14,21 +14,23 @@ services:
       - /opt/hui/projects/TaskFlow/data/mysql/conf:/etc/mysql/conf.d
       - /opt/hui/projects/TaskFlow/data/mysql/log:/var/log/mysql
 
-#  hh_web:
-#    image: nginx:stable-alpine
-#    ports:
-#      - "6868:6868"
-#    volumes:
-#      - /opt/hui/data/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
-#      - /opt/hui/data/nginx/data:/data
-#      - /opt/hui/data/nginx/log:/var/log/nginx
+  tf_web:
+    image: nginx:stable-alpine
+    ports:
+      - "6969:6969"
+    volumes:
+      - /opt/hui/projects/TaskFlow/data/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - /opt/hui/projects/TaskFlow/data/nginx/data:/data
+      - /opt/hui/projects/TaskFlow/data/nginx/log:/var/log/nginx
 
   tf_api:
-    image: task_flow_image
+    image: taskflow_image
     ports:
       - "8099:8099"
     volumes:
-      - /opt/hui/TaskFlow/data/settings:/app/src/settings
+      - /opt/hui/projects/TaskFlow/logs:/app/logs
+      - /opt/hui/projects/TaskFlow/settings:/app/src/settings
+
     command: python main.py
     depends_on:
       - tf_mysql_server

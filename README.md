@@ -4,6 +4,8 @@
 
 ```python
     |-- TaskFlow
+    |-- bin:  快捷可执行命令文件
+    |-- conf:  项目部署中间件的配置
     |-- docs:  项目文档
     |-- logs:  项目日志
     |-- src:   源代码
@@ -41,6 +43,13 @@ pip install -r requirements.txt
 ```
 
 ## 项目启动
+修改 `src/settings` 目录下的配置文件，如MySQL、Github OAuth等。
 ```python
 python main.py
 ```
+
+## 项目部署
+1. 修改 `src/settings` 目录下的配置文件，如MySQL、Github OAuth等。
+2. 把打包好的前端代码放到 `res/front_dist` 目录下。
+3. 在当前目录下构建后端服务镜像 `docker build -t taskflow_image .`
+4. 运行`./bin/start.sh` 利用 `docker-compose` 编排启动服务。
