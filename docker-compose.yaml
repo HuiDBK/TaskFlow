@@ -32,5 +32,6 @@ services:
       - /opt/hui/projects/TaskFlow/settings:/app/src/settings
 
     command: python main.py
+    network_mode: host
     depends_on:
       - tf_mysql_server

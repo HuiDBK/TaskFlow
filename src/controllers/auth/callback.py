@@ -20,7 +20,8 @@ class AuthCallback(BaseController):
         oauth_service = GithubOAuthService(auth_setting.github_client_id, auth_setting.github_client_secret)
         try:
             oauth_token = await oauth_service.handle_callback(code)
-            response = RedirectResponse(frontend_index_url, headers={"oauth_token": oauth_token})
+            redirect_uri = f"{frontend_index_url}?oauth_token={oauth_token}" ""
+            response = RedirectResponse(redirect_uri, headers={"oauth_token": oauth_token})
             response.set_cookie(
                 key="oauth_token", value=oauth_token, max_age=auth_setting.auth_expires_delta.total_seconds()
             )
