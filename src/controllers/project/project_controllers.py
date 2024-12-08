@@ -3,29 +3,37 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/09/04 14:04
+from fastapi import Depends
 
-
+from src.controllers.base import BaseController
 from src.data_models.api_models import project
+from src.data_models.api_models.base import PageRespModel, PKRespModel, SuccessRespModel
+from src.services.project import ProjectService
 
 
-class ProjectControllers:
-    """项目创建路由管理"""
+class ProjectController(BaseController):
+    """项目路由管理"""
 
     @classmethod
     async def create_project(cls, req_model: project.ProjectCreateIn):
-        pass
+        project_id = await ProjectService().create_project(req_model)
+        return PKRespModel(pk_id=project_id)
 
     @classmethod
     async def delete_project(cls, req_model: project.ProjectDeleteIn):
-        pass
+        await ProjectService().delete_project(req_model.project_ids, cls.current_user().id)
+        return SuccessRespModel()
 
     @classmethod
-    async def query_list_project(cls, req_model: project.ProjectQueryIn):
-        pass
+    async def query_projects(cls, req_model=Depends(project.ProjectQueryIn)):
+        total, data_list = await ProjectService().list_projects(req_model)
+        return PageRespModel(total=total, data_list=data_list)
 
     @classmethod
-    async def update_project(cls, req_model: project.ProjectUpdateIn):
-        pass
+    async def update_project(cls, project_id: int, req_model: project.ProjectUpdateIn):
+        req_model.id = project_id
+        await ProjectService().update_project(req_model)
+        return SuccessRespModel()
 
 
 class ProjectDetailControllers:

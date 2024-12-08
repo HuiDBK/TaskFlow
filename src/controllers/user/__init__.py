@@ -4,4 +4,4 @@
 # @Desc: { 模块描述 }
 # @Date: 2023/08/30 11:05
 from .detail import UserDetailControllers
-from .login_register import UserRegisterControllers
+from .login_register import UserRegisterController

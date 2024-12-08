@@ -1,10 +1,13 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from py_tools.connections.http import AsyncHttpClient
 from py_tools.logging import logger
 
-from src.controllers.common.error_handler import register_exception_handler
+from src import dao
 from src.middlewares import register_middlewares
+from src.middlewares.depends import register_depends
+from src.middlewares.error_handler import register_exception_handler
 from src.routers import api_router
 from src.utils import TraceUtil, log_util
 
@@ -19,6 +22,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     description="任务管理系统",
     lifespan=lifespan,
+    dependencies=register_depends(),  # 注册全局依赖
     middleware=register_middlewares(),  # 注册web中间件
     exception_handlers=register_exception_handler(),  # 注册web错误处理
 )
@@ -29,7 +33,7 @@ async def init_setup():
 
     log_util.setup_logger()
 
-    # await dao.init_orm()
+    await dao.init_orm()
     # await dao.init_redis()
 
 
@@ -46,4 +50,5 @@ async def startup():
 
 
 async def shutdown():
+    await AsyncHttpClient.close()
     logger.error("app shutdown")

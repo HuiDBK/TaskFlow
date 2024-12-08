@@ -3,5 +3,6 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/09/06 16:51
-from .base import BizErrCodeEnum
-from .project import ProjectStatusEnum
+from src.enums.base import BizErrCodeEnum
+from src.enums.project import ProjectStatusEnum, ProjectPriority, ProjectTypeEnum
+from src.enums.task import TaskStatusEnum, TaskPriorityEnum

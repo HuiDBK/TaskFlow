@@ -7,7 +7,14 @@
 from py_tools.connections.db.mysql import DBManager, SQLAlchemyManager
 
 from src import settings
+from src.dao.orm.tables import BaseTable
 from src.dao.redis import RedisManager
+
+
+async def init_tables():
+    # 根据映射初始化库表
+    async with DBManager.connection() as conn:
+        await conn.run_sync(BaseTable.metadata.create_all)
 
 
 async def init_orm():
@@ -19,8 +26,10 @@ async def init_orm():
         password=settings.mysql_password,
         db_name=settings.mysql_dbname,
     )
-    db_client.init_mysql_engine()
+    db_client.init_mysql_engine(echo=settings.sql_echo)
     DBManager.init_db_client(db_client)
+
+    await init_tables()
     return db_client
 
 

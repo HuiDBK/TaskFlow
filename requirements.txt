@@ -1,4 +1,6 @@
-hui-tools[all]==0.5.3
+hui-tools[all]==0.5.8
 fastapi==0.103.0
 uvicorn==0.20.0
 pydantic[email]
+cryptography==43.0.3
+python-multipart==0.0.6

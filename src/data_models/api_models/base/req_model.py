@@ -4,18 +4,26 @@
 # @Desc: { 模块描述 }
 # @Date: 2023/08/30 11:29
 from datetime import date
-
-from pydantic import BaseModel, Field, validator
 from typing import Optional
+
+from fastapi import Query
+from pydantic import BaseModel, Field, validator
 
 from src.constants import constants
 
 
 class ListPageBaseModel(BaseModel):
     """分页入参模型"""
-    current_page: Optional[int] = Field(default=1, gt=0, description="页码")
+
+    current_page: Optional[int] = Field(Query(default=1, gt=0, description="页码"))
     page_size: Optional[int] = Field(
-        default=constants.DEFAULT_PAGE_SIZE, gt=0, le=constants.MAX_PAGE_SIZE, description="每页数量，默认10，最大1000")
+        Query(
+            default=constants.DEFAULT_PAGE_SIZE,
+            gt=0,
+            le=constants.MAX_PAGE_SIZE,
+            description="每页数量，默认10，最大1000",
+        )
+    )
 
 
 class DateModel(BaseModel):

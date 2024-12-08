@@ -3,4 +3,4 @@
 # @Author: zxq
 # @Desc: { 模块描述 }
 # @Date: 2023/08/30 12:10
-from .task_controllers import TaskControllers
+from .task_controller import TaskController

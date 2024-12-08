@@ -6,11 +6,12 @@
 
 
 # mysql服务配置
-mysql_host = "127.0.0.1"
+mysql_host = "tf_mysql_server"
 mysql_port = 3306
-mysql_user = "root"
+mysql_user = "hui"
 mysql_password = "123456"
 mysql_dbname = "task_flow"
+sql_echo = False
 
 
 # redis服务配置
