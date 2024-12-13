@@ -1,4 +1,18 @@
 # 任务管理系统
+- 前端项目：https://github.com/HuiDBK/TaskFlow-FE
+- 后端项目：https://github.com/HuiDBK/TaskFlow
+- 在线体验：http://43.138.173.93:6969/
+
+登陆
+![taskflow_index.png](docs/images/taskflow_login.png)
+
+首页
+![taskflow_index.png](docs/images/taskflow_index.png)
+
+## 项目简介
+> 任务管理系统是一个基于FastAPI的Web应用程序，提供了用户管理、项目管理、任务管理、github 登录等功能。
+> 主要是集成 [py-tools](https://github.com/HuiDBK/py-tools) 快速开发的项目。
+
 
 ## 项目工程结构
 
